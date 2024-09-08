@@ -1,12 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
+import LoadingSpinner from "./LoadingSpinner";
+import { useState } from "react";
 
 export default function ProductCard({ product }) {
+  const [loading, setLoading] = useState(false);
+
   return (
     <>
       <div className="flex flex-col h-full bg-white border border-slate-200 shadow-lg shadow-slate-950/5 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:scale-102 hover:shadow-xl">
         <Link href={`/product/${product.id}`} className="block">
           <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+            {loading && (
+              <div className="absolute inset-0 bg-white bg-opacity-75 z-10 flex items-center justify-center">
+                <LoadingSpinner />
+              </div>
+            )}
             <Image
               src={product.thumbnail}
               alt={product.title}

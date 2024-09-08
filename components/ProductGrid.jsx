@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { getProducts } from '../lib/api'
 import ProductCard from './ProductCard'
+import LoadingSpinner from './LoadingSpinner'
 
 export default function ProductGrid() {
   const [products, setProducts] = useState([])
@@ -26,7 +27,7 @@ export default function ProductGrid() {
     }
   }
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div><LoadingSpinner />.</div>
   if (error) return <div className="text-red-500">{error}</div>
 
   return (
