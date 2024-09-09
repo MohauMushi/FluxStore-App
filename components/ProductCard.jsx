@@ -12,7 +12,7 @@ export default function ProductCard({ product }) {
               alt={product.title}
               width={300}
               height={200}
-              priority={true}
+              // priority={true}
               className="w-full mt-5 h-48 object-contain"
             />
             <div className="p-4">
