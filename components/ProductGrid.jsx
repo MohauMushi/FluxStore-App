@@ -47,7 +47,9 @@ export default function ProductGrid() {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
-      <Pagination currentPage={currentPage} onPageChange={setCurrentPage} />
+      <div className="mb-5  flex justify-center items-center">
+        <Pagination currentPage={currentPage} onPageChange={setCurrentPage} />
+      </div>
     </div>
   );
 }
