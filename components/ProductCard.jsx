@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import StarRating from "./StarRating";
 
 export default function ProductCard({ product }) {
   return (
@@ -18,6 +19,7 @@ export default function ProductCard({ product }) {
             <h2 className="text-lg font-semibold text-gray-00 mb-2 line-clamp-2">
               {product.title}
             </h2>
+            <StarRating rating={product.rating} />
             <div className="flex justify-between items-center">
               <p className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                 ${product.price.toFixed(2)}
