@@ -9,10 +9,25 @@ export default async function ProductPage({ params }) {
 
     return (
       <div className="container mx-auto px-4 py-8">
-        <Link href="/" className="text-teal-500 mb-4 inline-block">
-          &larr; Back to products
+        <Link
+          href="/"
+          className="
+          inline-block px-4 py-2 mb-4
+          text-sm font-medium text-white
+          bg-teal-500 rounded-md shadow-md
+          transition duration-300 ease-in-out
+          hover:bg-teal-600 hover:shadow-lg
+          focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50
+          active:bg-teal-700 active:shadow-inner
+          transform hover:-translate-y-0.5 active:translate-y-0
+          "
+        >
+          <span className="inline-block mr-2 transition-transform duration-300 group-hover:-translate-x-1">
+            &larr;
+          </span>
+          Back to products
         </Link>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid bg-gray-50 p-5 rounded-lg grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <Image
               src={product.thumbnail}
