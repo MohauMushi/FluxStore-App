@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ReviewList from "../../../components/Reviews";
 import Gallery from "../../../components/Gallery";
+import StarRating from "@/components/StarRating";
 
 export default async function ProductPage({ params }) {
   try {
@@ -42,9 +43,14 @@ export default async function ProductPage({ params }) {
           <div>
             <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
             <p className="text-gray-600 mb-4">{product.description}</p>
-            <p className="text-2xl font-bold mb-4">${product.price}</p>
-            <p className="mb-2">Category: {product.category}</p>
-            <p className="mb-2">Rating: {product.rating}/5</p>
+            <p className="text-black font-bold mb-2 text-xl">
+              ${product.price}
+            </p>
+            <p className="text-gray-600 px-2 py-1 bg-indigo-100 rounded-md text-xs font-medium mb-2 inline-block">
+              {" "}
+              {product.category}
+            </p>
+            <StarRating rating={product.rating} />
             <p className="mb-4">Stock: {product.stock}</p>
             <div className="mb-4">
               <h2 className="text-xl font-semibold mb-2">Tags:</h2>
