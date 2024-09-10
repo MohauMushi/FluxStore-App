@@ -2,6 +2,7 @@ import { getProduct } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import ReviewList from "../../../components/Reviews";
+import Gallery from "../../../components/Gallery";
 
 export default async function ProductPage({ params }) {
   try {
@@ -29,13 +30,14 @@ export default async function ProductPage({ params }) {
         </Link>
         <div className="grid bg-gray-50 p-5 rounded-lg grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <Image
+            {/* <Image
               src={product.thumbnail}
               alt={product.title}
               width={500}
               height={500}
               className="w-full h-96 object-contain rounded-lg"
-            />
+            /> */}
+            <Gallery images={[product.thumbnail, ...product.images]} />
           </div>
           <div>
             <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
