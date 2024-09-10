@@ -43,8 +43,8 @@ export default async function ProductPage({ params }) {
               </div>
             </div>
           </div>
-          <ReviewList reviews={product.reviews || []} />
         </div>
+        <ReviewList reviews={product.reviews || []} />
       </div>
     );
   } catch (error) {
