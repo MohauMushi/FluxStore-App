@@ -1,6 +1,7 @@
 import { getProduct } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
+import ReviewList from "../../../components/Reviews";
 
 export default async function ProductPage({ params }) {
   try {
@@ -42,6 +43,7 @@ export default async function ProductPage({ params }) {
               </div>
             </div>
           </div>
+          <ReviewList reviews={product.reviews || []} />
         </div>
       </div>
     );
