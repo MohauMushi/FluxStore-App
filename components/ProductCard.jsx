@@ -1,20 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import StarRating from "./StarRating";
+import Gallery from "./Gallery";
 
 export default function ProductCard({ product }) {
+
   return (
     <>
       <div className="flex flex-col h-full bg-white border border-slate-200 shadow-lg shadow-slate-950/5 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:scale-102 hover:shadow-xl">
         <Link href={`/product/${product.id}`} className="block">
-          <Image
+          {/* <Image
             src={product.thumbnail}
             alt={product.title}
             width={300}
             height={200}
-            // priority={true}
+            priority={true}
             className="w-full mt-5 h-48 object-contain"
-          />
+          /> */}
+          <div className="m-5">
+            <Gallery images={[...product.images]} />
+          </div>
           <div className="p-4">
             <h2 className="text-lg font-semibold text-gray-00 mb-2 line-clamp-2">
               {product.title}
