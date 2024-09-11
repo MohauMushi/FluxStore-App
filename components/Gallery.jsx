@@ -60,8 +60,14 @@ const Gallery = ({ images }) => {
       </div>
       {images.length > 1 && (
         <ArrowButtons
-          onPrevClick={prevImage}
-          onNextClick={nextImage}
+          onPrevClick={(e) => {
+            e.preventDefault();
+            prevImage();
+          }}
+          onNextClick={(e) => {
+            e.preventDefault();
+            prevImage();
+          }}
           disabled={animation}
         />
       )}
