@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import ArrowButtons from "./ArrowButtons";
 
 const Gallery = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -59,41 +59,11 @@ const Gallery = ({ images }) => {
         ))}
       </div>
       {images.length > 1 && (
-        <>
-          <button
-            onClick={prevImage}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md transition-all duration-200 hover:bg-opacity-100 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-teal-500 z-10"
-            disabled={animation}
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <button
-            onClick={nextImage}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md transition-all duration-200 hover:bg-opacity-100 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-teal-500 z-10"
-            disabled={animation}
-          >
-            <ChevronRight size={24} />
-          </button>
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {images.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  if (animation) return;
-                  setDirection(index > currentIndex ? 1 : -1);
-                  setAnimation(true);
-                  setCurrentIndex(index);
-                }}
-                className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                  index === currentIndex
-                    ? "bg-teal-600 scale-125"
-                    : "bg-teal-700 bg-opacity-50"
-                }`}
-                disabled={animation}
-              />
-            ))}
-          </div>
-        </>
+        <ArrowButtons
+          onPrevClick={prevImage}
+          onNextClick={nextImage}
+          disabled={animation}
+        />
       )}
     </div>
   );
