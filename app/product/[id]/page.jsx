@@ -38,7 +38,7 @@ export default async function ProductPage({ params }) {
               height={500}
               className="w-full h-96 object-contain rounded-lg"
             /> */}
-            <Gallery images={[product.thumbnail, ...product.images]} />
+            <Gallery images={[...product.images]} />
           </div>
           <div>
             <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
