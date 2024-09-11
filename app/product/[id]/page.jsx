@@ -51,7 +51,20 @@ export default async function ProductPage({ params }) {
               {product.category}
             </p>
             <StarRating rating={product.rating} />
-            <p className="mb-4">Stock: {product.stock}</p>
+            <div className="flex items-center space-x-2 mb-2 text-sm font-medium">
+              <span
+                className={`px-2 py-1 rounded-full ${
+                  product.stock > 0
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {product.stock > 0 ? "In stock" : "Out of stock"}
+              </span>
+              <span className="text-gray-600">
+                Available: <span className="font-bold">{product.stock}</span>
+              </span>
+            </div>
             <div className="mb-4">
               <h2 className="text-xl font-semibold mb-2">Tags:</h2>
               <div className="flex flex-wrap">
