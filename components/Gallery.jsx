@@ -33,7 +33,7 @@ const Gallery = ({ images }) => {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-xl shadow-md">
+    <div className="relative overflow-hidden rounded-xl shadow-sm">
       <div className="w-full h-96 relative">
         {images.map((image, index) => (
           <div
@@ -59,11 +59,32 @@ const Gallery = ({ images }) => {
         ))}
       </div>
       {images.length > 1 && (
-        <ArrowButtons
-          onPrevClick={prevImage}
-          onNextClick={nextImage}
-          disabled={animation}
-        />
+        <>
+          <ArrowButtons
+            onPrevClick={prevImage}
+            onNextClick={nextImage}
+            disabled={animation}
+          />
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  if (animation) return;
+                  setDirection(index > currentIndex ? 1 : -1);
+                  setAnimation(true);
+                  setCurrentIndex(index);
+                }}
+                className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                  index === currentIndex
+                    ? "bg-teal-600 scale-125"
+                    : "bg-teal-700 bg-opacity-50"
+                }`}
+                disabled={animation}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
