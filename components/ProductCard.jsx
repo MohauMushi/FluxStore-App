@@ -5,12 +5,14 @@ import Image from "next/image";
 import StarRating from "./StarRating";
 import Gallery from "./Gallery";
 
-export default function ProductCard({ product }) {
-
+export default function ProductCard({ product, currentPage }) {
   return (
     <>
       <div className="flex flex-col h-full bg-white border border-slate-200 shadow-lg shadow-slate-950/5 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:scale-102 hover:shadow-xl">
-        <Link href={`/product/${product.id}`} className="block">
+        <Link
+          href={`/product/${product.id}`}
+          className="block"
+        >
           {/* <Image
             src={product.thumbnail}
             alt={product.title}
