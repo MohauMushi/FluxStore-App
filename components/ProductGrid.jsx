@@ -43,14 +43,41 @@ export default function ProductGrid() {
         <LoadingSpinner />
       </div>
     );
-  if (error) return <div className="text-red-500">{error}</div>;
+  // if (loading) {
+  //   return (
+  //     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  //       {[...Array(8)].map((_, index) => (
+  //         <div
+  //           key={index}
+  //           className="animate-pulse bg-gray-200 h-64 rounded-lg"
+  //         ></div>
+  //       ))}
+  //     </div>
+  //   );
+  // }
+
+  if (error) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-red-500 mb-4">{error}</p>
+        <button
+          onClick={() => fetchProducts(currentPage)}
+          className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (products.length === 0) {
+    return <div className="text-center py-10">No products found.</div>;
+  }
 
   return (
     <div>
-      <div className="mb-5  flex justify-center items-center">
-        <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {products.map((product) => (
           <ProductCard
             key={product.id}
@@ -59,9 +86,7 @@ export default function ProductGrid() {
           />
         ))}
       </div>
-      <div className="mb-5  flex justify-center items-center">
-        <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
-      </div>
+      <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
     </div>
   );
 }
