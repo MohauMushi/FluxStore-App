@@ -34,7 +34,7 @@ const Gallery = ({ images }) => {
 
   return (
     <div className="relative overflow-hidden rounded-xl shadow-sm">
-      <div className="w-full h-96 relative">
+      <div className="w-full h-[22rem] relative">
         {images.map((image, index) => (
           <div
             key={index}
@@ -51,9 +51,9 @@ const Gallery = ({ images }) => {
             <Image
               src={image}
               alt={`Product image ${index + 1}`}
-              width={500}
-              height={500}
-              className="w-full h-[24rem] block justify-center items-start object-contain rounded-lg"
+              width={300}
+              height={300}
+              className="w-full h-[20rem] block justify-center items-start object-contain rounded-lg"
             />
           </div>
         ))}
