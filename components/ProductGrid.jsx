@@ -7,7 +7,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./pagination";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function ProductGrid() {
+export default function ProductGrid({totalPages}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
@@ -76,7 +76,7 @@ export default function ProductGrid() {
 
   return (
     <div>
-      <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
+      <Pagination currentPage={currentPage} totalPages={10} onPageChange={handlePageChange} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {products.map((product) => (
           <ProductCard
@@ -86,7 +86,7 @@ export default function ProductGrid() {
           />
         ))}
       </div>
-      <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
+      <Pagination currentPage={currentPage} totalPages={10} onPageChange={handlePageChange} />
     </div>
   );
 }
