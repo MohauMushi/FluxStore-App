@@ -4,6 +4,10 @@
 
 FluxStore is a modern, feature-rich e-commerce application built with Next.js. It showcases a variety of products, allowing users to browse through a catalog, view detailed product information, and navigate through multiple pages of products. The store is designed with performance, scalability, and user experience in mind, leveraging the power of Next.js for server-side rendering and optimized client-side navigation.
 
+![FluxStore Home Page](./public/homePage.png)
+![FluxStore Product Detail](./public/productDetail.png)
+![FluxStore Product Detail Reviews](./public/productDetailReviews.png)
+
 ## Key Features
 
 - Responsive product grid layout displaying 20 products per page
