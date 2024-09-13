@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { getProduct } from "../../../lib/api";
 import Image from "next/image";
@@ -20,7 +20,7 @@ import BackButton from "../../../components/BackButton";
  * @param {string} props.params.id - The product ID
  * @returns {JSX.Element} The rendered ProductPage component
  */
-export default async function ProductPage({ params }) {
+export default function ProductPage({ params }) {
   // State for managing product data, loading state, and errors
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
@@ -30,21 +30,24 @@ export default async function ProductPage({ params }) {
   const searchParams = useSearchParams();
   const page = searchParams.get("page") || "1";
 
+  // Function to fetch product data
+  const fetchProduct = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await getProduct(params.id);
+      setProduct(data);
+      setError(null);
+    } catch (err) {
+      setError("Failed to load product. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  }, [params.id]);
+
   // Fetch product data on component mount or when params.id changes
   useEffect(() => {
-    async function fetchProduct() {
-      try {
-        setLoading(true);
-        const data = await getProduct(params.id);
-        setProduct(data);
-      } catch (err) {
-        setError("Failed to load product. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchProduct();
-  }, [params.id]);
+  }, [fetchProduct]);
 
   // Show loading spinner while fetching data
   if (loading) {
@@ -55,8 +58,20 @@ export default async function ProductPage({ params }) {
     );
   }
 
-  // Show error message if fetch failed
-  if (error) return <div className="text-red-500">{error}</div>;
+  // Show error message and retry button if fetch failed
+  if (error) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-red-500 mb-4">{error}</p>
+        <button
+          onClick={fetchProduct}
+          className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   // Show message if no product found
   if (!product) return <div>No product found.</div>;
@@ -64,8 +79,8 @@ export default async function ProductPage({ params }) {
   // Render product details
   return (
     <div className="container mx-auto px-4 py-8">
-   {/*BackButton Component*/}
-    <BackButton />
+      {/* BackButton Component */}
+      <BackButton />
 
       {/* Product details grid */}
       <div className="grid bg-gray-50 p-5 rounded-lg grid-cols-1 md:grid-cols-2 gap-8">
@@ -76,12 +91,17 @@ export default async function ProductPage({ params }) {
 
         {/* Product information */}
         <div>
+          {/* Product title */}
           <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
+          {/* Product description */}
           <p className="text-gray-600 mb-4">{product.description}</p>
+          {/* Product price */}
           <p className="text-black font-bold mb-2 text-xl">${product.price}</p>
+          {/* Product category */}
           <p className="text-gray-600 px-2 py-1 bg-indigo-100 rounded-md text-xs font-medium mb-2 inline-block">
             {product.category}
           </p>
+          {/* Product rating */}
           <StarRating rating={product.rating} />
 
           {/* Stock information */}
