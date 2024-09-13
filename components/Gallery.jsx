@@ -4,6 +4,12 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import ArrowButtons from "./ArrowButtons";
 
+/**
+ * Gallery component for displaying a carousel of images.
+ * @param {Object} props - The component props.
+ * @param {string[]} props.images - Array of image URLs to display in the gallery.
+ * @returns {JSX.Element} A responsive image gallery with navigation controls.
+ */
 const Gallery = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -16,6 +22,9 @@ const Gallery = ({ images }) => {
     }
   }, [animation]);
 
+  /**
+   * Navigates to the next image in the gallery.
+   */
   const nextImage = () => {
     if (animation) return;
     setDirection(1);
@@ -23,6 +32,9 @@ const Gallery = ({ images }) => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
+  /**
+   * Navigates to the previous image in the gallery.
+   */
   const prevImage = () => {
     if (animation) return;
     setDirection(-1);
@@ -33,8 +45,11 @@ const Gallery = ({ images }) => {
   };
 
   return (
+    // Main container for the gallery
     <div className="relative overflow-hidden rounded-xl shadow-sm">
+      {/* Container for the images */}
       <div className="w-full h-[22rem] relative">
+        {/* Map through images and render each one */}
         {images.map((image, index) => (
           <div
             key={index}
@@ -48,6 +63,7 @@ const Gallery = ({ images }) => {
                     : "opacity-0"
             }`}
           >
+            {/* Image component with responsive sizing */}
             <Image
               src={image}
               alt={`Product image ${index + 1}`}
@@ -58,13 +74,16 @@ const Gallery = ({ images }) => {
           </div>
         ))}
       </div>
+      {/* Render navigation controls if there's more than one image */}
       {images.length > 1 && (
         <>
+          {/* Arrow buttons for navigation */}
           <ArrowButtons
             onPrevClick={prevImage}
             onNextClick={nextImage}
             disabled={animation}
           />
+          {/* Dot indicators for image position */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             {images.map((_, index) => (
               <button

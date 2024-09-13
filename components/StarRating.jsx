@@ -1,3 +1,11 @@
+/**
+ * StarRating Component
+ * Renders a star rating based on the given rating value.
+ *
+ * @param {Object} props - The component props
+ * @param {number} props.rating - The rating value (0-5)
+ * @returns {JSX.Element} The rendered StarRating component
+ */
 const StarRating = ({ rating }) => {
   return (
     <div className="flex items-center mb-2">

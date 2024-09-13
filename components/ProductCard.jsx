@@ -5,10 +5,20 @@ import Image from "next/image";
 import StarRating from "./StarRating";
 import Gallery from "./Gallery";
 
+/**
+ * ProductCard Component
+ * Renders a card displaying product information in a grid or list view.
+ *
+ * @param {Object} props - The component props
+ * @param {Object} props.product - The product object containing details to be displayed
+ * @param {number} props.currentPage - The current page number (for navigation purposes)
+ * @returns {JSX.Element} The rendered ProductCard component
+ */
 export default function ProductCard({ product, currentPage }) {
   return (
     <>
       <div className="flex flex-col h-full bg-white border border-slate-200 shadow-lg shadow-slate-950/5 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:scale-102 hover:shadow-xl">
+        {/* Product link and image */}
         <Link href={`/product/${product.id}`} className="block">
           {/* <Image
             src={product.thumbnail}
@@ -18,19 +28,29 @@ export default function ProductCard({ product, currentPage }) {
             priority={true}
             className="w-full mt-5 h-48 object-contain"
           /> */}
+          {/* Image gallery */}
           <div className="-m-3">
             <Gallery images={[...product.images]} />
           </div>
+
+          {/* Product details */}
           <div className="p-4">
+            {/* Product title */}
             <h2 className="text-lg font-semibold text-gray-00 mb-2 line-clamp-2">
               {product.title}
             </h2>
+
+            {/* Star rating */}
             <StarRating rating={product.rating} />
+
+            {/* Price */}
             <div className="flex justify-between items-center">
               <p className="text-xl font-bold text-[#415a77]">
                 ${product.price.toFixed(2)}
               </p>
             </div>
+
+            {/* Category */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 space-y-2 sm:space-y-0">
               <p className="px-2 py-1 bg-indigo-100 text-[#415a77] rounded-md text-xs font-medium">
                 {product.category}
@@ -38,8 +58,11 @@ export default function ProductCard({ product, currentPage }) {
             </div>
           </div>
         </Link>
-        <div class="flex justify-between m-4 p-2.5 bg-gray-50 rounded-lg shadow-inner">
-          <button class="p-2 rounded-full transition-colors duration-300">
+
+        {/* Action buttons */}
+        <div className="flex justify-between m-4 p-2.5 bg-gray-50 rounded-lg shadow-inner">
+          {/* Favorite button */}
+          <button className="p-2 rounded-full transition-colors duration-300">
             <svg
               className="h-6 w-6 text-gray-600 hover:text-red-500 hover:fill-red-500"
               aria-hidden="true"
@@ -49,22 +72,23 @@ export default function ProductCard({ product, currentPage }) {
               stroke="currentColor"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
                 d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
               />
             </svg>
           </button>
 
-          <div class="relative">
+          {/* Add to cart button */}
+          <div className="relative">
             <button
               className="
             flex items-center justify-center w-full px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white text-sm font-medium rounded-md transition-colors duration-300,
           "
             >
               <svg
-                class="h-5 w-5 mr-2"
+                className="h-5 w-5 mr-2"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"

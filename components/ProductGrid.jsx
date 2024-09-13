@@ -7,19 +7,35 @@ import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./pagination";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function ProductGrid({totalPages}) {
+/**
+ * ProductGrid Component
+ *
+ * This component displays a grid of product cards with pagination.
+ * It fetches products based on the current page and handles page navigation.
+ *
+ * @param {Object} props - The component props
+ * @param {number} props.totalPages - The total number of pages of products
+ * @returns {JSX.Element} A div containing the product grid and pagination controls
+ */
+export default function ProductGrid({ totalPages }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Get the current page from the URL query parameters
   const currentPage = Number(searchParams.get("page")) || 1;
 
+  // Fetch products when the current page changes
   useEffect(() => {
     fetchProducts(currentPage);
   }, [currentPage]);
 
+  /**
+   * Fetches products for the given page
+   * @param {number} page - The page number to fetch
+   */
   async function fetchProducts(page) {
     try {
       setLoading(true);
@@ -33,10 +49,15 @@ export default function ProductGrid({totalPages}) {
     }
   }
 
+  /**
+   * Handles page change by updating the URL
+   * @param {number} newPage - The new page number to navigate to
+   */
   const handlePageChange = (newPage) => {
     router.push(`/?page=${newPage}`);
   };
 
+  // Show loading spinner while fetching products
   if (loading)
     return (
       <div>
@@ -56,6 +77,7 @@ export default function ProductGrid({totalPages}) {
   //   );
   // }
 
+  // Show error message if product fetch fails
   if (error) {
     return (
       <div className="text-center py-10">
@@ -70,13 +92,19 @@ export default function ProductGrid({totalPages}) {
     );
   }
 
+  // Show message if no products are found
   if (products.length === 0) {
     return <div className="text-center py-10">No products found.</div>;
   }
 
+  // Rendering product grid and pagination
   return (
     <div>
-      <Pagination currentPage={currentPage} totalPages={10} onPageChange={handlePageChange} />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={10}
+        onPageChange={handlePageChange}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {products.map((product) => (
           <ProductCard
@@ -86,7 +114,11 @@ export default function ProductGrid({totalPages}) {
           />
         ))}
       </div>
-      <Pagination currentPage={currentPage} totalPages={10} onPageChange={handlePageChange} />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={10}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

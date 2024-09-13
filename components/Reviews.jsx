@@ -1,10 +1,20 @@
 import StarRating from "./StarRating";
 
+/**
+ * ReviewList Component
+ * Renders a list of reviews along with average rating and rating distribution.
+ *
+ * @param {Object} props - The component props
+ * @param {Array} props.reviews - An array of review objects
+ * @returns {JSX.Element} The rendered ReviewList component
+ */
 export default function ReviewList({ reviews }) {
+  // Calculating the average rating
   const averageRating =
     reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
   const roundedAverage = Math.round(averageRating * 10) / 10;
 
+  // Counting the number of reviews for each rating
   const ratingCounts = reviews.reduce((acc, review) => {
     acc[review.rating] = (acc[review.rating] || 0) + 1;
     return acc;
@@ -15,7 +25,9 @@ export default function ReviewList({ reviews }) {
       <div className="p-6">
         <h2 className="text-[1.2rem] font-bold mb-6 text-gray-700">Reviews</h2>
         <div className="flex flex-col lg:flex-row">
+          {/* Rating summary section */}
           <div className="mb-6 lg:mb-0 lg:w-1/3 lg:pr-5">
+            {/* Average rating display */}
             <div className="flex items-center mb-1">
               <span className="text-[3rem] text-gray-600 font-bold mr-2">
                 {roundedAverage}
@@ -28,6 +40,7 @@ export default function ReviewList({ reviews }) {
               </div>
             </div>
 
+            {/* Rating distribution bars */}
             {[5, 4, 3, 2, 1].map((rating) => (
               <div key={rating} className="flex items-center mb-2">
                 <span className="flex justify-center items-center w-8 text-gray-600">
@@ -55,6 +68,7 @@ export default function ReviewList({ reviews }) {
               </div>
             ))}
           </div>
+          {/* Individual reviews section */}
           <div className="lg:w-2/3 lg:pl-6 lg:border-l md:ml-5  border-gray-200">
             {reviews.map((review, index) => (
               <div

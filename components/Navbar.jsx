@@ -3,17 +3,30 @@
 import { useState } from "react";
 import Link from "next/link";
 
+/**
+ * @component Navbar
+ * @description A responsive navigation bar component for the FluxStore application.
+ * It includes a logo, navigation links, and icons for cart and account.
+ * The component is responsive and includes a mobile menu for smaller screens.
+ * @returns {JSX.Element} The rendered Navbar component
+ */
 const Navbar = () => {
+  /** @type {[boolean, function]} State to control the mobile menu visibility */
   const [isOpen, setIsOpen] = useState(false);
 
+  /**
+   * Toggles the mobile menu open/closed state
+   * @function
+   */
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   return (
     <nav className="bg-teal-700 shadow-md sticky z-50 top-0">
-      <div className=" px-4 sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Logo and brand name */}
           <div className="flex items-center">
             <Link
               href="/"
@@ -29,8 +42,11 @@ const Navbar = () => {
               </span>
             </Link>
           </div>
+
+          {/* Desktop navigation menu */}
           <div className="hidden md:block">
             <div className="flex justify-center items-center space-x-4">
+              {/* Navigation links */}
               <Link
                 href="/"
                 className="text-white hover:bg-teal-600 hover:text-white block px-3 py-1 rounded-md text-base font-medium md:m-0"
@@ -49,10 +65,8 @@ const Navbar = () => {
               >
                 Contact
               </Link>
-              {/* </div>
-          </div>
-          <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6"> */}
+
+              {/* Cart icon */}
               <Link
                 href="/cart"
                 className="p-2 rounded-lg text-white hover:bg-teal-600 focus:outline-none"
@@ -72,6 +86,8 @@ const Navbar = () => {
                   />
                 </svg>
               </Link>
+
+              {/* Account icon */}
               <Link
                 href="/account"
                 className="ml-3 p-2 rounded-lg text-white hover:bg-teal-600 focus:outline-none"
@@ -93,10 +109,12 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
+
+          {/* Mobile menu button */}
           <div className="-mr-2 flex md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-white  focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-md text-white focus:outline-none"
             >
               {isOpen ? (
                 <svg
@@ -134,9 +152,11 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Mobile menu, show/hide based on menu state */}
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {/* Mobile navigation links */}
             <Link
               href="/"
               className="text-white hover:bg-teal-600 hover:text-white block px-3 py-1 rounded-md text-base font-medium md:m-0"
@@ -158,6 +178,7 @@ const Navbar = () => {
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="flex items-center px-5">
+              {/* Mobile cart icon */}
               <Link
                 href="/cart"
                 className="p-2 rounded-lg text-white hover:bg-teal-600 focus:outline-none"
@@ -177,6 +198,7 @@ const Navbar = () => {
                   />
                 </svg>
               </Link>
+              {/* Mobile account icon */}
               <Link
                 href="/account"
                 className="ml-auto p-2 rounded-lg text-white hover:bg-teal-600 focus:outline-none"

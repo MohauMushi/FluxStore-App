@@ -1,9 +1,18 @@
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+/**
+ * ArrowButtons component for navigation in a carousel or gallery.
+ * @param {Object} props - The component props.
+ * @param {Function} props.onPrevClick - Function to handle previous button click.
+ * @param {Function} props.onNextClick - Function to handle next button click.
+ * @param {boolean} props.disabled - Whether the buttons should be disabled.
+ * @returns {JSX.Element} Previous and Next arrow buttons.
+ */
 const ArrowButtons = ({ onPrevClick, onNextClick, disabled }) => {
   return (
     <>
+      {/* Previous (left) arrow button */}
       <button
         onClick={(e) => {
           e.preventDefault();
@@ -14,6 +23,7 @@ const ArrowButtons = ({ onPrevClick, onNextClick, disabled }) => {
       >
         <ChevronLeft size={24} />
       </button>
+      {/* Next (right) arrow button */}
       <button
         onClick={(e) => {
           e.preventDefault();
