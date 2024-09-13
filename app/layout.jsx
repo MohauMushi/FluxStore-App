@@ -1,5 +1,6 @@
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 /**
  * Metadata for the application.
@@ -23,8 +24,12 @@ export default function RootLayout({ children }) {
       <body>
         {/* Navigation bar component */}
         <Navbar />
-        {/* Main content area */}
-        {children}
+        <div className="flex-grow">
+          {/* Main content area */}
+          {children}
+        </div>
+        {/* Footer component*/}
+        <Footer />
       </body>
     </html>
   );
