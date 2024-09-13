@@ -66,7 +66,11 @@ export default async function ProductPage({ params }) {
     <div className="container mx-auto px-4 py-8">
       {/* Back to products link */}
       <Link
-        href={`/?page=${page}`}
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          router.back();
+        }}
         className="
           inline-block px-4 py-2 mb-4
           text-sm font-medium text-white
@@ -107,7 +111,7 @@ export default async function ProductPage({ params }) {
               className={`px-2 py-1 rounded-full ${
                 product.stock > 0
                   ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
+                  : "bg-red-100 text-red-500"
               }`}
             >
               {product.stock > 0 ? "In stock" : "Out of stock"}
