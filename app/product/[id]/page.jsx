@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { getProduct } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import ReviewList from "../../../components/Reviews";
 import Gallery from "../../../components/Gallery";
 import StarRating from "@/components/StarRating";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import BackButton from "../../../components/BackButton";
 
 /**
  * ProductPage Component
@@ -26,7 +27,6 @@ export default async function ProductPage({ params }) {
   const [loading, setLoading] = useState(true);
 
   // Next.js routing hooks
-  const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams.get("page") || "1";
 
@@ -64,29 +64,8 @@ export default async function ProductPage({ params }) {
   // Render product details
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Back to products link */}
-      <Link
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          router.back();
-        }}
-        className="
-          inline-block px-4 py-2 mb-4
-          text-sm font-medium text-white
-          bg-teal-500 rounded-md shadow-md
-          transition duration-300 ease-in-out
-          hover:bg-teal-600 hover:shadow-lg
-          focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50
-          active:bg-teal-700 active:shadow-inner
-          transform hover:-translate-y-0.5 active:translate-y-0
-          "
-      >
-        <span className="inline-block mr-2 transition-transform duration-300 group-hover:-translate-x-1">
-          &larr;
-        </span>
-        Back to products
-      </Link>
+   {/*BackButton Component*/}
+    <BackButton />
 
       {/* Product details grid */}
       <div className="grid bg-gray-50 p-5 rounded-lg grid-cols-1 md:grid-cols-2 gap-8">
