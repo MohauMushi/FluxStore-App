@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FluxStore
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+FluxStore is a modern, feature-rich e-commerce application built with Next.js. It showcases a variety of products, allowing users to browse through a catalog, view detailed product information, and navigate through multiple pages of products. The store is designed with performance, scalability, and user experience in mind, leveraging the power of Next.js for server-side rendering and optimized client-side navigation.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Responsive product grid layout displaying 20 products per page
+- Detailed product pages with image galleries and preview controls
+- Pagination for browsing multiple pages of products
+- Server-side rendering for improved performance and SEO
+- Optimized image loading with Next.js Image component
+- Error handling and fallback UI for robust user experience
+- Product categorization and tagging
+- User reviews and ratings
+- Stock and availability information
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Next.js**: A React framework for production-grade applications with server-side rendering and routing capabilities.
+- **React**: A JavaScript library for building user interfaces.
+- **JavaScript**: The primary programming language used for both front-end and back-end logic.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
+- **next/image**: Next.js's built-in Image component for optimized image loading and rendering.
 
-## Learn More
+## Setup Instructions
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```
+   git clone https://github.com/MohauMushi/MOHMUS379_JSE2407_GroupA_Mohau-Mushi_FSJ01.git
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. **Install dependencies**
 
-## Deploy on Vercel
+   ```
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Run the development server**
+   ```
+   npm run dev
+   ```
+   The application should now be running on `http://localhost:3000`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Usage Examples
+
+### Viewing Products
+
+- Navigate to the home page to see a grid of 20 products.
+- Use the pagination controls at the Top/bottom of the page to navigate between different pages of products.
+
+### Viewing Product Details
+
+- Click on any product card to view its detailed information.
+- On the detailed product page, you'll find:
+  - Product title and description
+  - Image gallery with navigation controls
+  - Price and category
+  - Associated tags
+  - Rating and stock information
+  - User reviews with reviewer name, date, comment, and rating
+
+### Navigating the Application
+
+- Use the navigation controls to move between the product grid and individual product pages.
+- The app URL will update to reflect the current page you're viewing.
+
+## Developer Information
+
+### Fetching Products
+
+- The first 20 products are fetched from `https://next-ecommerce-api.vercel.app/products`.
+- Subsequent pages of 20 products are fetched as users navigate.
+- Implement skipping to fetch only necessary product data for the current page.
+
+### Error Handling
+
+- Errors during product data fetching are handled gracefully.
+- User-friendly error messages are displayed if products or individual product data fails to load.
+
+### Server-Side Rendering
+
+- Product data is rendered on the server using Next.js server components.
+- Individual product data is loaded via fetch from individual product endpoints.
+
+### Loading States
+
+- Implement loading states while new data is being fetched.
+
+## Contributing
+
+Contributions to this project are welcome! Please follow these steps to contribute:
+
+1. Fork the repository
+2. Create a new branch for your feature (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Author
+
+**_MOHAU MUSHI_**
