@@ -36,13 +36,19 @@ FluxStore is a modern, feature-rich e-commerce application built with Next.js. I
    git clone https://github.com/MohauMushi/MOHMUS379_JSE2407_GroupA_Mohau-Mushi_FSJ01.git
    ```
 
-2. **Install dependencies**
+2. Navigate to the project directory:
+
+   ```
+   cd MOHMUS379_JSE2407_GroupA_Mohau-Mushi_FSJ01
+   ```
+
+3. **Install dependencies**
 
    ```
    npm install
    ```
 
-3. **Run the development server**
+4. **Run the development server**
    ```
    npm run dev
    ```
