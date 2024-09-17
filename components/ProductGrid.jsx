@@ -17,7 +17,7 @@ import { useRouter, useSearchParams } from "next/navigation";
  * @param {number} props.totalPages - The total number of pages of products
  * @returns {JSX.Element} A div containing the product grid and pagination controls
  */
-export default function ProductGrid({ totalPages }) {
+export default function ProductGrid() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
@@ -26,20 +26,21 @@ export default function ProductGrid({ totalPages }) {
 
   // Get the current page from the URL query parameters
   const currentPage = Number(searchParams.get("page")) || 1;
+  const search = searchParams.get("search") || "";
 
   // Fetch products when the current page changes
   useEffect(() => {
-    fetchProducts(currentPage);
-  }, [currentPage]);
+    fetchProducts(currentPage, search);
+  }, [currentPage, search]);
 
   /**
    * Fetches products for the given page
    * @param {number} page - The page number to fetch
    */
-  async function fetchProducts(page) {
+  async function fetchProducts(page, search) {
     try {
       setLoading(true);
-      const data = await getProducts(page);
+      const data = await getProducts(page, 20, search);
       setProducts(data);
       setError(null);
     } catch (err) {
@@ -56,26 +57,8 @@ export default function ProductGrid({ totalPages }) {
   const handlePageChange = (newPage) => {
     router.push(`/?page=${newPage}`);
   };
-
   // Show loading spinner while fetching products
-  if (loading)
-    return (
-      <div>
-        <LoadingSpinner />
-      </div>
-    );
-  // if (loading) {
-  //   return (
-  //     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-  //       {[...Array(8)].map((_, index) => (
-  //         <div
-  //           key={index}
-  //           className="animate-pulse bg-gray-200 h-64 rounded-lg"
-  //         ></div>
-  //       ))}
-  //     </div>
-  //   );
-  // }
+  if (loading) return <LoadingSpinner />;
 
   // Show error message if product fetch fails
   if (error) {
@@ -83,7 +66,7 @@ export default function ProductGrid({ totalPages }) {
       <div className="text-center py-10">
         <p className="text-red-500 mb-4">{error}</p>
         <button
-          onClick={() => fetchProducts(currentPage)}
+          onClick={() => fetchProducts(currentPage, search)}
           className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
         >
           Retry
