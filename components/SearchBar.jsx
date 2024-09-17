@@ -1,18 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SearchBar() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const [search, setSearch] = useState(
-    searchParams.get("search") || ""
-  );
+  const [search, setSearch] = useState(searchParams.get("search") || "");
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearch(value);
-    
+
     const params = new URLSearchParams(searchParams);
     if (value) {
       params.set("search", value);
@@ -20,6 +19,7 @@ export default function SearchBar() {
       params.delete("search");
     }
     params.delete("page");
+    router.push(`/?${params.toString()}`);
   };
 
   return (
