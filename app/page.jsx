@@ -3,6 +3,10 @@ import SearchBar from "../components/SearchBar";
 import { Suspense } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 
+export const metadata = {
+  title: "FluxStore - Home",
+  description: "Browse our wide range of products at FluxStore",
+};
 /**
  * Home page component.
  * @returns {JSX.Element} The home page structure with a ProductGrid.
