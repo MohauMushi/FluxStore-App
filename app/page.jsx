@@ -1,4 +1,7 @@
 import ProductGrid from "../components/ProductGrid";
+import SearchBar from "../components/SearchBar";
+import { Suspense } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 /**
  * Home page component.
@@ -8,8 +11,12 @@ export default function Home() {
   return (
     // Main content area with styling for minimum height, padding, and background
     <main className="min-h-screen px-4 bg-gray-100 text-gray-900 transition-colors duration-300">
-      {/* Product grid component to display products */}
-      <ProductGrid />
+      <div className="container mx-auto py-8">
+        <SearchBar />
+        <Suspense fallback={<LoadingSpinner />}>
+          <ProductGrid />
+        </Suspense>
+      </div>
     </main>
   );
 }
