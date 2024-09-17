@@ -55,7 +55,9 @@ export default function ProductGrid() {
    * @param {number} newPage - The new page number to navigate to
    */
   const handlePageChange = (newPage) => {
-    router.push(`/?page=${newPage}`);
+    const params = new URLSearchParams(searchParams);
+    params.set("page", newPage);
+    router.push(`/?${params.toString()}`);
   };
   // Show loading spinner while fetching products
   if (loading) return <LoadingSpinner />;
