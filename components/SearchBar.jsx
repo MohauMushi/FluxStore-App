@@ -22,8 +22,20 @@ export default function SearchBar() {
     router.push(`/?${params.toString()}`);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams(searchParams);
+    if (search) {
+      params.set("search", search);
+    } else {
+      params.delete("search");
+    }
+    params.delete("page");
+    router.push(`/?${params.toString()}`);
+  };
+
   return (
-    <form className="w-full md:w-auto mb-4 md:mb-0">
+    <form onSubmit={handleSubmit} className="w-full md:w-auto mb-4 md:mb-0">
       {/* Main container for the search bar */}
       <div className="relative">
         {/* Search input field */}

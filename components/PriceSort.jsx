@@ -10,7 +10,22 @@ export default function PriceSort() {
     searchParams.get("order") || "default"
   );
 
+  const handleSortChange = (e) => {
+    const order = e.target.value;
+    setSortOrder(order);
+    const currentParams = new URLSearchParams(searchParams.toString());
 
+    if (order === "default") {
+      currentParams.delete("sortBy");
+      currentParams.delete("order");
+    } else {
+      currentParams.set("sortBy", "price");
+      currentParams.set("order", order);
+    }
+
+    currentParams.set("page", "1");
+    router.push(`/?${currentParams.toString()}`);
+  };
 
   return (
     <div className="w-full">
@@ -23,6 +38,7 @@ export default function PriceSort() {
       <select
         id="price-sort"
         value={sortOrder}
+        onChange={handleSortChange}
         className="w-full px-3 py-2 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
       >
         <option value="default">Default</option>
