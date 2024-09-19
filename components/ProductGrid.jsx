@@ -6,6 +6,8 @@ import { getProducts } from "../lib/api";
 import ProductCard from "./ProductCard";
 import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./pagination";
+import PriceSort from "./PriceSort";
+import CategoryFilter from "./CategoryFilter";
 /**
  * ProductGrid Component
  *
@@ -22,6 +24,7 @@ export default function ProductGrid() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isReset, setIsReset] = useState(false);
 
   // Get the current page from the URL query parameters
   const currentPage = Number(searchParams.get("page")) || 1;
@@ -70,7 +73,9 @@ export default function ProductGrid() {
   };
 
   const handleReset = () => {
+    setIsReset(true);
     router.push("/");
+    setTimeout(() => setIsReset(false), 100);
   };
   // Show loading spinner while fetching products
   if (loading) return <LoadingSpinner />;
@@ -91,7 +96,15 @@ export default function ProductGrid() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-center">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="w-full sm:w-auto">
+          <CategoryFilter isReset={isReset} />
+        </div>
+        <div className="w-full sm:w-auto">
+          <PriceSort isReset={isReset} />
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row justify-end items-end mb-6">
         <button
           onClick={handleReset}
           className="
