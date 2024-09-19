@@ -1,20 +1,24 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function PriceSort() {
+export default function PriceSort({ isReset }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [sortOrder, setSortOrder] = useState(
     searchParams.get("order") || "default"
   );
 
+  useEffect(() => {
+    if (isReset) {
+      setSortOrder("default");
+    }
+  }, [isReset]);
+
   const handleSortChange = (e) => {
     const order = e.target.value;
     setSortOrder(order);
     const currentParams = new URLSearchParams(searchParams.toString());
-
     if (order === "default") {
       currentParams.delete("sortBy");
       currentParams.delete("order");
@@ -22,7 +26,6 @@ export default function PriceSort() {
       currentParams.set("sortBy", "price");
       currentParams.set("order", order);
     }
-
     currentParams.set("page", "1");
     router.push(`/?${currentParams.toString()}`);
   };

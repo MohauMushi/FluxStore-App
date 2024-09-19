@@ -1,10 +1,9 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getCategories } from "../lib/api";
 
-export default function CategoryFilter() {
+export default function CategoryFilter({ isReset }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [categories, setCategories] = useState([]);
@@ -15,6 +14,12 @@ export default function CategoryFilter() {
   useEffect(() => {
     getCategories().then(setCategories).catch(console.error);
   }, []);
+
+  useEffect(() => {
+    if (isReset) {
+      setSelectedCategory("");
+    }
+  }, [isReset]);
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
