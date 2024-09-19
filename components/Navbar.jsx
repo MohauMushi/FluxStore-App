@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import SearchBar from "./SearchBar";
 
 /**
  * @component Navbar
  * @description A responsive navigation bar component for the FluxStore application.
- * It includes a logo, navigation links, and icons for cart and account.
+ * It includes a logo, navigation links, search bar, and icons for cart and account.
  * The component is responsive and includes a mobile menu for smaller screens.
  * @returns {JSX.Element} The rendered Navbar component
  */
@@ -65,7 +66,15 @@ const Navbar = () => {
               >
                 Contact
               </Link>
+              {/* </div>
 
+            
+
+            <div className="flex items-center"> */}
+              {/* SearchBar component */}
+              <div className="flex-1 max-w-64 mx-4">
+                <SearchBar />
+              </div>
               {/* Cart icon */}
               <Link
                 href="/cart"
@@ -111,7 +120,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="-mr-2 flex md:hidden">
+          <div className="flex md:hidden">
             <button
               onClick={toggleMenu}
               className="inline-flex items-center justify-center p-2 rounded-md text-white focus:outline-none"
@@ -175,6 +184,10 @@ const Navbar = () => {
             >
               Contact
             </Link>
+          </div>
+          {/* Mobile SearchBar */}
+          <div className="px-2 pb-3">
+            <SearchBar />
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="flex items-center px-5">

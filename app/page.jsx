@@ -1,7 +1,6 @@
 import ProductGrid from "../components/ProductGrid";
 import { Suspense } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
-import SearchBar from "../components/SearchBar";
 
 export const metadata = {
   title: "FluxStore - Shop the Latest Products",
@@ -16,9 +15,6 @@ export default function Home() {
   return (
     // Main content area with styling for minimum height, padding, and background
     <main className="min-h-screen px-4 bg-gray-100 text-gray-900 transition-colors duration-300">
-      <div className=" mt-6 flex flex-wrap items-center justify-between">
-        <SearchBar />
-      </div>
       <div className="container mx-auto py-8">
         <Suspense fallback={<LoadingSpinner />}>
           <ProductGrid />
