@@ -39,8 +39,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       {/* Current page indicator */}
       <div className="flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md">
         <span className="font-bold text-teal-600">{currentPage}</span>
-        <span className="mx-2 text-gray-500">/</span>
-        <span>{totalPages}</span>
+        {/* <span className="mx-2 text-gray-500">/</span> */}
+        {/* <span>{totalPages}</span> */}
       </div>
 
       {/* Next page button */}
