@@ -23,44 +23,40 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="mb-6">
+    <form className="w-full md:w-auto mb-4 md:mb-0">
       {/* Main container for the search bar */}
-      <div className="w-full md:w-auto mb-3">
-        <div className="relative">
-          {/* Search input field */}
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={handleSearch}
-            className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-          {/* Search button */}
-          <button
-            type="button"
-            className="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-teal-700 dark:bg-gray-950 rounded-e-lg border border-teal-700 dark:border-gray-700 focus:ring-4 focus:outline-none"
+      <div className="relative">
+        {/* Search input field */}
+        <input
+          id="search"
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={handleSearch}
+          className="w-full px-3 py-2 pr-10 text-sm text-gray-800 bg-white border-0 rounded-full focus:ring-2 focus:ring-teal-300 focus:outline-none"
+        />
+        {/* Search button */}
+        <button
+          type="submit"
+          className="absolute inset-y-0 right-0 flex items-center px-3 text-teal-700 hover:text-teal-900"
+        >
+          {/* Search icon SVG */}
+          <svg
+            className="w-5 h-5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
           >
-            {/* Search icon SVG */}
-            <svg
-              className="w-4 h-4"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
-            {/* Screen reader text for the search button */}
-            <span className="sr-only">Search</span>
-          </button>
-        </div>
+            <path
+              fillRule="evenodd"
+              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+              clipRule="evenodd"
+            />
+          </svg>
+          {/* Screen reader text for the search button */}
+          <span className="sr-only">Search</span>
+        </button>
       </div>
-    </div>
+    </form>
   );
 }
