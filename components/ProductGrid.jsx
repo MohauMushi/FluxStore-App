@@ -64,9 +64,9 @@ export default function ProductGrid() {
    * @param {number} newPage - The new page number to navigate to
    */
   const handlePageChange = (newPage) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", newPage);
-    router.push(`/?${params.toString()}`);
+    const currentParams = new URLSearchParams(searchParams.toString());
+    currentParams.set("page", newPage.toString());
+    router.push(`/?${currentParams.toString()}`);
   };
 
   const handleReset = () => {
