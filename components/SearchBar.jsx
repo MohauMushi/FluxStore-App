@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function SearchBar({ onReset }) {
+export default function SearchBar({ isVisible, onToggle }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("search") || "");
+  const searchInputRef = useRef(null);
 
   useEffect(() => {
     // Updating search state when searchParams change
@@ -15,6 +16,12 @@ export default function SearchBar({ onReset }) {
       setSearch(currentSearch);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (isVisible && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isVisible]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -44,49 +51,94 @@ export default function SearchBar({ onReset }) {
 
   const resetSearch = () => {
     setSearch("");
+    onToggle();
     const params = new URLSearchParams(searchParams);
     params.delete("search");
     params.delete("page");
     router.push(`/?${params.toString()}`);
-    if (onReset) onReset();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full md:w-auto mb-4 md:mb-0">
+    <form onSubmit={handleSubmit} className="relative w-full">
       {/* Main container for the search bar */}
-      <div className="relative">
-        {/* Search input field */}
-        <input
-          id="search"
-          type="text"
-          placeholder="Search products..."
-          value={search}
-          onChange={handleSearch}
-          className="w-full px-3 py-2 pr-10 text-sm text-gray-800 bg-white border-0 rounded-full focus:ring-2 focus:ring-teal-300 focus:outline-none"
-        />
-        {/* Search button */}
-        <button
-          type="submit"
-          className="absolute inset-y-0 right-0 flex items-center px-3 text-teal-700 hover:text-teal-900"
+      <div className="flex items-center justify-end">
+        <div
+          className={`
+            relative overflow-hidden w-full
+            transition-all duration-300 ease-in-out
+            ${isVisible ? "w-full" : "w-10"}
+          `}
         >
-          {/* Search icon SVG */}
+          {/* Search input field */}
+          <input
+            ref={searchInputRef}
+            id="search"
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={handleSearch}
+            className={`
+              w-full px-3 py-2 pr-10 rounded-r-3xl text-sm text-gray-800 bg-white
+              border border-gray-300
+              focus:ring-2 focus:outline-none
+              transition-all duration-300 ease-in-out
+              ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full"}
+            `}
+          />
+          {/* Search button */}
+          <button
+            type="button"
+            onClick={onToggle}
+            className={`
+              absolute right-0 top-0
+              flex items-center justify-center w-10 h-full
+              text-teal-700 bg-gray-50 hover:bg-gray-100
+              focus:outline-none focus:ring-2
+              transition-all duration-300 ease-in-out
+              ${isVisible ? "rounded-r-full border border-l-0 border-gray-300" : "rounded"}
+            `}
+          >
+            {/* Search icon SVG */}
+            <svg
+              className="w-5 h-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {/* Screen reader text for the search button */}
+            <span className="sr-only">Toggle search</span>
+          </button>
+        </div>
+      </div>
+      {search && isVisible && (
+        <button
+          type="button"
+          onClick={resetSearch}
+          className="absolute right-12 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+        >
           <svg
             className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
           >
             <path
-              fillRule="evenodd"
-              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-              clipRule="evenodd"
-            />
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
           </svg>
-          {/* Screen reader text for the search button */}
-          <span className="sr-only">Search</span>
+          <span className="sr-only">Clear search</span>
         </button>
-      </div>
+      )}
     </form>
   );
 }
-
