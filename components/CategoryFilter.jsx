@@ -12,6 +12,7 @@ export default function CategoryFilter({ isReset }) {
   );
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
     getCategories().then(setCategories).catch(console.error);
@@ -25,7 +26,12 @@ export default function CategoryFilter({ isReset }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
         setIsOpen(false);
       }
     };
@@ -50,7 +56,7 @@ export default function CategoryFilter({ isReset }) {
   };
 
   return (
-    <div className="w-full md:w-auto mb-4 md:mb-0 relative" ref={dropdownRef}>
+    <div className="w-full md:w-auto mb-4 md:mb-0 relative">
       <label
         htmlFor="category"
         className="block text-sm font-medium text-gray-700 mb-1"
@@ -58,12 +64,13 @@ export default function CategoryFilter({ isReset }) {
         Filter by Category:
       </label>
       <button
-        id="dropdownHoverButton"
+        ref={buttonRef}
+        id="categoryFilterButton"
         onClick={() => setIsOpen(!isOpen)}
-        className="text-black bg-gray-100 border border-gray-300 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+        className="w-full md:w-auto text-black bg-gray-100 border border-gray-300 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between"
         type="button"
       >
-        {selectedCategory || "All Categories"}{" "}
+        <span>{selectedCategory || "All Categories"}</span>
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"
@@ -81,23 +88,26 @@ export default function CategoryFilter({ isReset }) {
         </svg>
       </button>
       {isOpen && (
-        <div className="z-10 absolute left-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-          <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
-            {/* <li>
+        <div
+          ref={dropdownRef}
+          className="z-10 absolute left-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-full md:w-56"
+        >
+          <ul className="py-2 text-sm text-gray-700">
+            <li>
               <a
                 href="#"
                 onClick={() => handleCategoryChange("")}
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                className="block px-4 py-2 hover:bg-gray-100"
               >
                 All Categories
               </a>
-            </li> */}
+            </li>
             {categories.map((category) => (
               <li key={category}>
                 <a
                   href="#"
                   onClick={() => handleCategoryChange(category)}
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="block px-4 py-2 hover:bg-gray-100"
                 >
                   {category}
                 </a>
