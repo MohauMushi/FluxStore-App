@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import StarRating from "./StarRating";
 
 /**
@@ -9,6 +12,20 @@ import StarRating from "./StarRating";
  * @returns {JSX.Element} The rendered ReviewList component
  */
 export default function ReviewList({ reviews }) {
+  const [sortBy, setSortBy] = useState("date");
+  const [sortOrder, setSortOrder] = useState("desc");
+
+  const sortedReviews = [...reviews].sort((a, b) => {
+    if (sortBy === "date") {
+      return sortOrder === "desc"
+        ? new Date(b.date) - new Date(a.date)
+        : new Date(a.date) - new Date(b.date);
+    } else if (sortBy === "rating") {
+      return sortOrder === "desc" ? b.rating - a.rating : a.rating - b.rating;
+    }
+    return 0;
+  });
+
   // Calculating the average rating
   const averageRating =
     reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
@@ -20,10 +37,30 @@ export default function ReviewList({ reviews }) {
     return acc;
   }, {});
 
+  const handleSortChange = (e) => {
+    const [newSortBy, newSortOrder] = e.target.value.split("-");
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder);
+  };
+
   return (
     <div className="mt-8 bg-gray-50 p-3 rounded-md">
       <div className="p-6">
-        <h2 className="text-[1.2rem] font-bold mb-6 text-gray-700">Reviews</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-[1.2rem] font-bold text-gray-700">Reviews</h2>
+          <div>
+            <label className="mr-2">Sort by:</label>
+            <select
+              onChange={handleSortChange}
+              className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            >
+              <option value="date-desc">Newest Date</option>
+              <option value="date-asc">Oldest Date</option>
+              <option value="rating-desc">Highest Rated</option>
+              <option value="rating-asc">Lowest Rated</option>
+            </select>
+          </div>
+        </div>
         <div className="flex flex-col lg:flex-row">
           {/* Rating summary section */}
           <div className="mb-6 lg:mb-0 lg:w-1/3 lg:pr-5">
@@ -70,7 +107,7 @@ export default function ReviewList({ reviews }) {
           </div>
           {/* Individual reviews section */}
           <div className="lg:w-2/3 lg:pl-6 lg:border-l md:ml-5  border-gray-200">
-            {reviews.map((review, index) => (
+            {sortedReviews.map((review, index) => (
               <div
                 key={index}
                 className="border-b border-gray-200 pb-6 mb-6 last:border-b-0"
