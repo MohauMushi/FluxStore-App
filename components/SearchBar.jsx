@@ -1,12 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function SearchBar() {
+export default function SearchBar({ onReset }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("search") || "");
+
+  useEffect(() => {
+    // Updating search state when searchParams change
+    const currentSearch = searchParams.get("search") || "";
+    if (currentSearch !== search) {
+      setSearch(currentSearch);
+    }
+  }, [searchParams]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -32,6 +40,15 @@ export default function SearchBar() {
     }
     params.delete("page");
     router.push(`/?${params.toString()}`);
+  };
+
+  const resetSearch = () => {
+    setSearch("");
+    const params = new URLSearchParams(searchParams);
+    params.delete("search");
+    params.delete("page");
+    router.push(`/?${params.toString()}`);
+    if (onReset) onReset();
   };
 
   return (
@@ -72,3 +89,4 @@ export default function SearchBar() {
     </form>
   );
 }
+
