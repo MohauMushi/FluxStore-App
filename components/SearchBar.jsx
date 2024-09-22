@@ -64,7 +64,7 @@ export default function SearchBar({ isVisible, onToggle }) {
       <div className="flex items-center justify-end">
         <div
           className={`
-            relative overflow-hidden w-full
+            relative overflow-hidden
             transition-all duration-300 ease-in-out
             ${isVisible ? "w-full" : "w-10"}
           `}
@@ -78,7 +78,7 @@ export default function SearchBar({ isVisible, onToggle }) {
             value={search}
             onChange={handleSearch}
             className={`
-              w-full px-3 py-2 pr-10 rounded-r-3xl text-sm text-gray-800 bg-white
+              w-full px-3 py-2 pr-10 rounded-3xl text-sm text-gray-800 bg-white
               border border-gray-300
               focus:ring-2 focus:outline-none
               transition-all duration-300 ease-in-out
@@ -95,12 +95,12 @@ export default function SearchBar({ isVisible, onToggle }) {
               text-teal-700 bg-gray-50 hover:bg-gray-100
               focus:outline-none focus:ring-2
               transition-all duration-300 ease-in-out
-              ${isVisible ? "rounded-r-full border border-l-0 border-gray-300" : "rounded"}
+              ${isVisible ? "rounded-r-full border border-l-0 border-gray-300" : "rounded-full"}
             `}
           >
             {/* Search icon SVG */}
             <svg
-              className="w-5 h-5"
+              className={`w-5 h-5 transition-transform duration-300 ${isVisible ? "rotate-90" : ""}`}
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
