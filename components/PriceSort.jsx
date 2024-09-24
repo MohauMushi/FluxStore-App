@@ -1,7 +1,14 @@
 "use client";
+
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+/**
+ * A React component that renders a price sort dropdown.
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isReset - Determines whether the sort order should be reset to default.
+ * @returns {JSX.Element} - The price sort dropdown component.
+ */
 export default function PriceSort({ isReset }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -12,12 +19,18 @@ export default function PriceSort({ isReset }) {
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
 
+  /**
+   * Resets the sort order to default when the `isReset` prop changes.
+   */
   useEffect(() => {
     if (isReset) {
       setSortOrder("default");
     }
   }, [isReset]);
 
+  /**
+   * Closes the dropdown when the user clicks outside of it.
+   */
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -36,6 +49,10 @@ export default function PriceSort({ isReset }) {
     };
   }, []);
 
+  /**
+   * Handles the change in sort order and updates the URL search parameters.
+   * @param {string} order - The new sort order.
+   */
   const handleSortChange = (order) => {
     setSortOrder(order);
     setIsOpen(false);
@@ -51,6 +68,11 @@ export default function PriceSort({ isReset }) {
     router.push(`/?${currentParams.toString()}`);
   };
 
+  /**
+   * Retrieves the label for the selected sort order.
+   * @param {string} order - The sort order.
+   * @returns {string} - The label for the selected sort order.
+   */
   const getSortLabel = (order) => {
     switch (order) {
       case "asc":

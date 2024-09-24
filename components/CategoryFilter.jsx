@@ -1,8 +1,15 @@
 "use client";
+
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getCategories } from "../lib/api";
 
+/**
+ * A React component that renders a category filter dropdown.
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isReset - Determines whether the selected category should be reset.
+ * @returns {JSX.Element} - The category filter dropdown component.
+ */
 export default function CategoryFilter({ isReset }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -14,16 +21,25 @@ export default function CategoryFilter({ isReset }) {
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
 
+  /**
+   * Fetches the available categories from the API.
+   */
   useEffect(() => {
     getCategories().then(setCategories).catch(console.error);
   }, []);
 
+  /**
+   * Resets the selected category to an empty string when the `isReset` prop changes.
+   */
   useEffect(() => {
     if (isReset) {
       setSelectedCategory("");
     }
   }, [isReset]);
 
+  /**
+   * Closes the dropdown when the user clicks outside of it.
+   */
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -42,6 +58,10 @@ export default function CategoryFilter({ isReset }) {
     };
   }, []);
 
+  /**
+   * Handles the change in selected category and updates the URL search parameters.
+   * @param {string} category - The new selected category.
+   */
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setIsOpen(false);

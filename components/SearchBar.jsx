@@ -3,12 +3,22 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+/**
+ * A React component that renders a search bar.
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isVisible - Determines whether the search bar should be visible.
+ * @param {function} props.onToggle - A function to toggle the visibility of the search bar.
+ * @returns {JSX.Element} - The search bar component.
+ */
 export default function SearchBar({ isVisible, onToggle }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const searchInputRef = useRef(null);
 
+  /**
+   * Updates the search state when the searchParams change.
+   */
   useEffect(() => {
     // Updating search state when searchParams change
     const currentSearch = searchParams.get("search") || "";
@@ -17,12 +27,19 @@ export default function SearchBar({ isVisible, onToggle }) {
     }
   }, [searchParams]);
 
+  /**
+   * Focuses the search input when the search bar becomes visible.
+   */
   useEffect(() => {
     if (isVisible && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [isVisible]);
 
+  /**
+   * Handles the search input change and updates the URL search parameters.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event object.
+   */
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearch(value);
@@ -37,6 +54,10 @@ export default function SearchBar({ isVisible, onToggle }) {
     router.push(`/?${params.toString()}`);
   };
 
+  /**
+   * Handles the search form submission and updates the URL search parameters.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submit event object.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     const params = new URLSearchParams(searchParams);
@@ -49,6 +70,9 @@ export default function SearchBar({ isVisible, onToggle }) {
     router.push(`/?${params.toString()}`);
   };
 
+  /**
+   * Resets the search and updates the URL search parameters.
+   */
   const resetSearch = () => {
     setSearch("");
     onToggle();
