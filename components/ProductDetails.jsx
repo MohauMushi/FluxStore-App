@@ -34,14 +34,21 @@ export default function ProductDetails({ product }) {
           {/* Product description */}
           <p className="text-gray-600 mb-4">{product.description}</p>
           {/* Product price */}
-          <p className="text-black font-bold mb-2 text-xl">${product.price}</p>
+          <div className="flex items-center mb-4">
+            <span className="text-2xl font-bold mr-2">${product.price}</span>
+            {/* <span className="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+              {product.discountPercentage}% OFF
+            </span> */}
+          </div>
+          {/* Product rating */}
+          <div className="mb-4">
+            <StarRating rating={product.rating} />
+          </div>
+          <p className="text-sm text-gray-600 mb-4">Brand: {product.brand}</p>
           {/* Product category */}
-          <p className="text-gray-600 px-2 py-1 bg-indigo-100 rounded-md text-xs font-medium mb-2 inline-block">
+          <p className="text-gray-600 px-2 py-1 bg-indigo-100 rounded-md text-xs font-medium mb-4 inline-block">
             {product.category}
           </p>
-          {/* Product rating */}
-          <StarRating rating={product.rating} />
-
           {/* Stock information */}
           <div className="flex items-center space-x-2 mb-2 text-sm font-medium">
             <span
