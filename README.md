@@ -19,6 +19,14 @@ FluxStore is a modern, feature-rich e-commerce application built with Next.js. I
 - Product categorization and tagging
 - User reviews and ratings
 - Stock and availability information
+- Search functionality for products by title
+- Filter products by categories
+- Sort products by price (ascending or descending)
+- URL reflection of current search, filter, and sort options
+- Pagination of filtered and sorted results
+- Dynamic meta tags for improved SEO
+- Sorting of reviews by date and rating in product detail page
+- Responsive and visually appealing UI/UX design
 
 ## Technologies Used
 
@@ -33,13 +41,13 @@ FluxStore is a modern, feature-rich e-commerce application built with Next.js. I
 1. **Clone the repository**
 
    ```
-   git clone https://github.com/MohauMushi/MOHMUS379_JSE2407_GroupA_Mohau-Mushi_FSJ01.git
+   git clone https://github.com/MohauMushi/MOHMUS379_JSE2407_GroupA_Mohau-Mushi_FSJ02.git
    ```
 
 2. Navigate to the project directory:
 
    ```
-   cd MOHMUS379_JSE2407_GroupA_Mohau-Mushi_FSJ01
+   cd MOHMUS379_JSE2407_GroupA_Mohau-Mushi_FSJ02
    ```
 
 3. **Install dependencies**
@@ -59,7 +67,7 @@ FluxStore is a modern, feature-rich e-commerce application built with Next.js. I
 ### Viewing Products
 
 - Navigate to the home page to see a grid of 20 products.
-- Use the pagination controls at the Top/bottom of the page to navigate between different pages of products.
+- Use the pagination controls at the top/bottom of the page to navigate between different pages of products.
 
 ### Viewing Product Details
 
@@ -71,19 +79,26 @@ FluxStore is a modern, feature-rich e-commerce application built with Next.js. I
   - Associated tags
   - Rating and stock information
   - User reviews with reviewer name, date, comment, and rating
+  - Option to sort reviews by date or rating
+
+### Searching and Filtering
+
+- Use the search bar on the navbar to find products by title or partial title.
+- Filter products by selecting categories from the provided options.
+- Sort products by price in ascending or descending order.
+- The URL will update to reflect your current search, filter, and sort options.
 
 ### Navigating the Application
 
-- Use the navigation controls to move between the product grid and individual product pages.
-- The app URL will update to reflect the current page you're viewing.
+- Your applied filtering, sorting, and searching preferences will be maintained when returning to the product list from a detailed product view.
+- Reset all filtering, sorting, and searching options at once to return to the default product view.
 
 ## Developer Information
 
 ### Fetching Products
 
-- The first 20 products are fetched from `https://next-ecommerce-api.vercel.app/products`.
-- Subsequent pages of 20 products are fetched as users navigate.
-- Implement skipping to fetch only necessary product data for the current page.
+- Products are fetched from `https://next-ecommerce-api.vercel.app/products` with support for search, filter, sort, and pagination parameters.
+- A single function handles fetching filtered and sorted results from the API.
 
 ### Error Handling
 
@@ -93,11 +108,18 @@ FluxStore is a modern, feature-rich e-commerce application built with Next.js. I
 ### Server-Side Rendering
 
 - Product data is rendered on the server using Next.js server components.
-- Individual product data is loaded via fetch from individual product endpoints.
+- The application parses the URL on page load to apply any search, filter, and sort parameters.
 
 ### Loading States
 
-- Implement loading states while new data is being fetched.
+- Loading states are implemented while new data is being fetched.
+
+### Optimization
+
+- SEO is improved with the addition of meta tags.
+- Dynamic meta data (title & description) is generated for each product.
+- Images are optimized using Next.js built-in features like next/image.
+- Data fetching in server components uses caching strategies to reduce redundant requests.
 
 ## Contributing
 
