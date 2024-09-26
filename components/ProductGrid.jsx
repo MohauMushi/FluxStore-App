@@ -25,6 +25,8 @@ export default function ProductGrid() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isReset, setIsReset] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   // Get the current page from the URL query parameters
   const currentPage = Number(searchParams.get("page")) || 1;
@@ -32,6 +34,7 @@ export default function ProductGrid() {
   const search = searchParams.get("search") || "";
   const sortBy = searchParams.get("sortBy") || "id";
   const order = searchParams.get("order") || "asc";
+  const limit = 20;
 
   // Fetch products when the current page changes
   useEffect(() => {
@@ -47,13 +50,17 @@ export default function ProductGrid() {
       setLoading(true);
       const data = await getProducts({
         page: currentPage,
-        limit: 20,
+        limit,
         category,
         search,
         sortBy,
         order,
       });
       setProducts(data);
+      setTotalPages(Math.ceil(data / limit));
+      setIsLastPage(
+        data.length < limit || currentPage === Math.ceil(data / limit)
+      );
       setError(null);
     } catch (err) {
       setError("Failed to load products. Please try again later.");
@@ -149,7 +156,12 @@ export default function ProductGrid() {
       )}
 
       <div className="flex justify-end mt-8">
-        <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          isLastPage={isLastPage}
+        />
       </div>
     </div>
   );
