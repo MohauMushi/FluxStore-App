@@ -3,6 +3,16 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 
+/**
+ * @typedef {Object} SpinningGearProps
+ * @property {string} [className] - Additional CSS classes for the SVG.
+ */
+
+/**
+ * Renders a spinning gear SVG animation.
+ * @function
+ * @returns {JSX.Element} The SpinningGear component.
+ */
 const SpinningGear = () => (
   <motion.svg
     xmlns="http://www.w3.org/2000/svg"
@@ -22,13 +32,28 @@ const SpinningGear = () => (
   </motion.svg>
 );
 
+/**
+ * @typedef {Object} ErrorProps
+ * @property {Error} error - The error object.
+ * @property {Function} reset - Function to reset the error state.
+ */
+
+/**
+ * Renders an error page with animation and a reset button.
+ * @function
+ * @param {ErrorProps} props - The component props.
+ * @returns {JSX.Element} The Error component.
+ */
 export default function Error({ error, reset }) {
+  /**
+   * Logs the error to the console when the component mounts or the error changes.
+   */
   useEffect(() => {
     console.error(error);
   }, [error]);
 
   return (
-    <section className="flex items-center h-full p-[1.28rem]  text-teal-900">
+    <section className="flex items-center h-full p-[1.28rem] text-teal-900">
       <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
         <div className="max-w-md text-center">
           <motion.div
