@@ -96,20 +96,24 @@ export default function ProductGrid() {
   };
   // Show loading spinner while fetching products
   if (loading) return <LoadingSpinner />;
-  // Show error message if product fetch fails
+  // Throw error if product fetch fails
   if (error) {
-    return (
-      <div className="text-center py-10">
-        <p className="text-red-500 mb-4">{error}</p>
-        <button
-          onClick={fetchProducts}
-          className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
-        >
-          Retry
-        </button>
-      </div>
-    );
+    throw error;
   }
+
+  // if (error) {
+  //     return (
+  //     <div className="text-center py-10">
+  //       <p className="text-red-500 mb-4">{error}</p>
+  //       <button
+  //         onClick={fetchProducts}
+  //         className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
+  //       >
+  //         Retry
+  //       </button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="space-y-6">
@@ -157,7 +161,7 @@ export default function ProductGrid() {
         </div>
       )}
 
-      {products.length === 0 ? (
+      {products.length === 0 && !error ? (
         <div className="text-center text-red-500 py-10">No products found.</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
