@@ -48,6 +48,15 @@ export default function ProductCard({ product, currentPage }) {
               <p className="text-xl font-bold text-[#415a77]">
                 ${product.price.toFixed(2)}
               </p>
+              <span
+                className={`px-2 py-1 rounded-full ${
+                  product.stock > 0
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-500"
+                }`}
+              >
+                {product.stock > 0 ? "In stock" : "Out of stock"}
+              </span>
             </div>
 
             {/* Category */}
