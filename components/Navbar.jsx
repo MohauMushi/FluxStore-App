@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import Image from "next/image";
+import { Suspense } from "react";
 
 /**
  * @component Navbar
@@ -73,7 +74,12 @@ const Navbar = () => {
             <div
               className={`flex-grow max-w-md ${isSearchVisible ? "w-full" : "w-auto"}`}
             >
-              <SearchBar isVisible={isSearchVisible} onToggle={toggleSearch} />
+              <Suspense fallback={<div>Loading search...</div>}>
+                <SearchBar
+                  isVisible={isSearchVisible}
+                  onToggle={toggleSearch}
+                />
+              </Suspense>
             </div>
 
             {/* Cart and Account icons */}
