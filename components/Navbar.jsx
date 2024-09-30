@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
+import Image from "next/image";
 
 /**
  * @component Navbar
@@ -54,10 +55,12 @@ const Navbar = () => {
               href="/"
               className="flex items-center space-x-3 rtl:space-x-reverse"
             >
-              <img
+              <Image
                 src="/accusoft-svgrepo-com.svg"
                 className="h-8"
                 alt="FluxStore Logo"
+                width={45}
+                height={50}
               />
               <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
                 FluxStore
