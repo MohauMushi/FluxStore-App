@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 /**
@@ -19,17 +19,21 @@ export default function SearchBar({ isVisible, onToggle }) {
   /**
    * Updates the search state when the searchParams change.
    */
-  useEffect(() => {
+  const updateSearch = useCallback(() => {
     // Updating search state when searchParams change
     const currentSearch = searchParams.get("search") || "";
     if (currentSearch !== search) {
       setSearch(currentSearch);
     }
-  }, [searchParams]);
+  }, [searchParams, search]);
 
   /**
    * Focuses the search input when the search bar becomes visible.
    */
+  useEffect(() => {
+    updateSearch();
+  }, [updateSearch]);
+
   useEffect(() => {
     if (isVisible && searchInputRef.current) {
       searchInputRef.current.focus();

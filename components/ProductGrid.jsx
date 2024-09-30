@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getProducts } from "../lib/api";
 import ProductCard from "./ProductCard";
@@ -18,7 +18,7 @@ import CategoryFilter from "./CategoryFilter";
  * @param {number} props.totalPages - The total number of pages of products
  * @returns {JSX.Element} A div containing the product grid and pagination controls
  */
-export default function ProductGrid() {
+function ProductGridContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
@@ -180,5 +180,13 @@ export default function ProductGrid() {
         />
       </div>
     </div>
+  );
+}
+
+export default function ProductGrid() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <ProductGridContent />
+    </Suspense>
   );
 }
