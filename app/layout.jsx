@@ -10,6 +10,22 @@ export const metadata = {
   title: "FluxStore",
   description:
     "FluxStore is a modern, feature-rich e-commerce application built with Next.js",
+  keywords: "e-commerce, online store, shopping",
+  author: "FluxStore Team @MOHAU-MUSHI",
+  openGraph: {
+    title: "FluxStore - Modern E-commerce Solution",
+    description:
+      "Shop the latest trends with FluxStore, your go-to online shopping destination.",
+    images: [
+      {
+        url: "../public/accusoft-svgrepo-com.svg",
+        width: 1200,
+        height: 630,
+        alt: "FluxStore Preview",
+      },
+    ],
+    site_name: "FluxStore",
+  },
 };
 
 /**
@@ -23,6 +39,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta charset="UTF-8" />
+        <link rel="icon" href="/Accusoft/favicon.ico" sizes="any" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
