@@ -25,31 +25,30 @@ function ProductGridContent() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isReset, setIsReset] = useState(false);
-  const [totalPages, setTotalPages] = useState(1);
-  const [isLastPage, setIsLastPage] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   // Get the current page from the URL query parameters
   const currentPage = Number(searchParams.get("page")) || 1;
   const category = searchParams.get("category") || "";
   const search = searchParams.get("search") || "";
-  const sortBy = searchParams.get("sortBy") || "id";
-  const order = searchParams.get("order") || "asc";
+  const sortParam = searchParams.get("sort") || "";
   const limit = 20;
 
-  /**
-   * Determines if any filters are active
-   * @type {boolean}
-   */
+  // Parse sort parameter into sortBy and order
+  const [sortBy, order] = useMemo(() => {
+    if (!sortParam) return ["id", "asc"];
+    const [field, direction] = sortParam.split("-");
+    return [field || "id", direction || "asc"];
+  }, [sortParam]);
+
   const isFilterActive = useMemo(() => {
-    return (
-      category !== "" || search !== "" || sortBy !== "id" || order !== "asc"
-    );
-  }, [category, search, sortBy, order]);
+    return category !== "" || search !== "" || sortParam !== "";
+  }, [category, search, sortParam]);
 
   // Fetch products when the current page changes
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, category, search, sortBy, order]);
+  }, [currentPage, category, search, sortParam]);
 
   /**
    * Fetches products for the given page
@@ -66,11 +65,8 @@ function ProductGridContent() {
         sortBy,
         order,
       });
-      setProducts(data);
-      setTotalPages(Math.ceil(data.length / limit));
-      setIsLastPage(
-        data.length < limit || currentPage === Math.ceil(data / limit)
-      );
+      setProducts(data.products);
+      setHasMore(data.hasMore);
       setError(null);
     } catch (err) {
       setError("Failed to load products. Please try again later.");
@@ -174,9 +170,8 @@ function ProductGridContent() {
       <div className="flex justify-end mt-8">
         <Pagination
           currentPage={currentPage}
-          totalPages={totalPages}
           onPageChange={handlePageChange}
-          isLastPage={isLastPage}
+          isLastPage={!hasMore}
         />
       </div>
     </div>
