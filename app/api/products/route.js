@@ -9,6 +9,7 @@ import {
   startAfter,
   getDocs,
 } from "firebase/firestore";
+import Fuse from "fuse.js";
 
 async function getLastDocFromPreviousPage(
   productsQuery,
@@ -34,6 +35,7 @@ export async function GET(request) {
     const sortBy = searchParams.get("sortBy") || "id";
     const order = searchParams.get("order") || "asc";
     const category = searchParams.get("category");
+    const search = searchParams.get("search");
 
     let productsQuery = collection(db, "products");
     let constraints = [];
@@ -60,10 +62,18 @@ export async function GET(request) {
     const finalQuery = query(productsQuery, ...constraints);
     const snapshot = await getDocs(finalQuery);
 
-    const products = snapshot.docs.map((doc) => ({
+    let products = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
+
+    if (search) {
+      const fuse = new Fuse(products, {
+        keys: ["title"],
+        threshold: 0.3,
+      });
+      products = fuse.search(search).map((result) => result.item);
+    }
 
     return NextResponse.json({
       products,
