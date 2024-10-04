@@ -13,20 +13,20 @@ import BackButton from "../../../components/BackButton";
  * @param {string} params.id - The ID of the product.
  * @returns {Promise<Object>} The metadata object for the product.
  */
-export async function generateMetadata({ params }) {
-  const product = await getProduct(params.id);
-  return {
-    title: product.title,
-    description: product.description,
-    openGraph: {
-      title: product.title,
-      description: product.description,
-      images: [
-        { url: product.images[0], width: 800, height: 600, alt: product.title },
-      ],
-    },
-  };
-}
+// export async function generateMetadata({ params }) {
+//   const product = await getProduct(params.id);
+//   return {
+//     title: product.title,
+//     description: product.description,
+//     openGraph: {
+//       title: product.title,
+//       description: product.description,
+//       images: [
+//         { url: product.images[0], width: 800, height: 600, alt: product.title },
+//       ],
+//     },
+//   };
+// }
 
 /**
  * Renders the product page.
