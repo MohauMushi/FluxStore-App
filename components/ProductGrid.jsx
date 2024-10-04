@@ -45,7 +45,7 @@ function ProductGridContent() {
     return category !== "" || search !== "" || sortParam !== "";
   }, [category, search, sortParam]);
 
-  // Fetch products when the current page changes
+  // Fetch products when the current page, category, search, or sort changes
   useEffect(() => {
     fetchProducts();
   }, [currentPage, category, search, sortParam]);
@@ -65,8 +65,8 @@ function ProductGridContent() {
         sortBy,
         order,
       });
-      setProducts(data.products);
-      setHasMore(data.hasMore);
+      setProducts(data);
+      setHasMore(data.length === limit);
       setError(null);
     } catch (err) {
       setError("Failed to load products. Please try again later.");
