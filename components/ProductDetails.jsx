@@ -17,7 +17,7 @@ import Gallery from "./Gallery";
  * @param {string[]} props.product.images - An array of image URLs for the product.
  * @returns {JSX.Element} The rendered ProductDetails component.
  */
-export default function ProductDetails({ product }) {
+export default function ProductDetails(product) {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Product details grid */}
