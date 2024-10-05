@@ -26,29 +26,24 @@ function ProductGridContent() {
   const [loading, setLoading] = useState(true);
   const [isReset, setIsReset] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // Get the current page from the URL query parameters
+  // Get all parameters from URL
   const currentPage = Number(searchParams.get("page")) || 1;
   const category = searchParams.get("category") || "";
   const search = searchParams.get("search") || "";
-  const sortParam = searchParams.get("sort") || "";
+  const sortBy = searchParams.get("sortBy") || "";
+  const order = searchParams.get("order") || "";
   const limit = 20;
 
-  // Parse sort parameter into sortBy and order
-  const [sortBy, order] = useMemo(() => {
-    if (!sortParam) return ["id", "asc"];
-    const [field, direction] = sortParam.split("-");
-    return [field || "id", direction || "asc"];
-  }, [sortParam]);
-
   const isFilterActive = useMemo(() => {
-    return category !== "" || search !== "" || sortParam !== "";
-  }, [category, search, sortParam]);
+    return category !== "" || search !== "" || sortBy !== "";
+  }, [category, search, sortBy]);
 
-  // Fetch products when the current page, category, search, or sort changes
+  // Fetch products when parameters change
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, category, search, sortParam]);
+  }, [currentPage, category, search, sortBy, order]);
 
   /**
    * Fetches products for the given page
