@@ -13,20 +13,33 @@ import BackButton from "../../../components/BackButton";
  * @param {string} params.id - The ID of the product.
  * @returns {Promise<Object>} The metadata object for the product.
  */
-// export async function generateMetadata({ params }) {
-//   const product = await getProduct(params.id);
-//   return {
-//     title: product.title,
-//     description: product.description,
-//     openGraph: {
-//       title: product.title,
-//       description: product.description,
-//       images: [
-//         { url: product.images[0], width: 800, height: 600, alt: product.title },
-//       ],
-//     },
-//   };
-// }
+export async function generateMetadata({ params }) {
+  try {
+    const product = await getProduct(params.id);
+    return {
+      title: product.title,
+      description: product.description,
+      openGraph: {
+        title: product.title,
+        description: product.description,
+        images: [
+          {
+            url: product.images[0],
+            width: 800,
+            height: 600,
+            alt: product.title,
+          },
+        ],
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Product Not Found",
+      description: "The requested product could not be found.",
+    };
+  }
+}
 
 /**
  * Renders the product page.
@@ -38,19 +51,34 @@ import BackButton from "../../../components/BackButton";
  * @returns {Promise<JSX.Element>} The rendered product page.
  */
 export default async function ProductPage({ params }) {
-  const product = await getProduct(params.id);
+  try {
+    const product = await getProduct(params.id);
 
-  if (!product) return <div>No product found.</div>;
+    if (!product) {
+      throw new Error("Product not found");
+    }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <BackButton />
-      <Suspense fallback={<Loading />}>
-        <ProductDetails product={product} />
-      </Suspense>
-      <Suspense fallback={<Loading />}>
-        <ReviewList reviews={product.reviews || []} />
-      </Suspense>
-    </div>
-  );
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <BackButton />
+        <Suspense fallback={<Loading />}>
+          <ProductDetails {...product} />
+        </Suspense>
+        <Suspense fallback={<Loading />}>
+          <ReviewList reviews={product.reviews || []} />
+        </Suspense>
+      </div>
+    );
+  } catch (error) {
+    console.error("Error rendering product page:", error);
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <BackButton />
+        <h1 className="text-2xl font-bold mb-4">Error</h1>
+        <p>
+          Sorry, there was an error loading the product. Please try again later.
+        </p>
+      </div>
+    );
+  }
 }
