@@ -143,7 +143,7 @@ export default function LoginPage() {
         <Link href="/contact" className="hover:underline">
           Contact Us
         </Link>{" "}
-        • <span>&copy; {currentYear} FluxStore All Rights Reserved</span>
+        • <span>&#64; {currentYear} FluxStore All Rights Reserved</span>
       </footer>
     </div>
   );
