@@ -1,11 +1,5 @@
 import { db } from "../../../lib/firebaseConfig";
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  getDocs,
-} from "firebase/firestore";
+import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import Fuse from "fuse.js";
 
 export async function GET(request) {
@@ -27,20 +21,13 @@ export async function GET(request) {
       queryConstraints.push(where("category", "==", category));
     }
 
-    // Apply sorting
-    if (sortBy === "price") {
-      queryConstraints.push(orderBy("price", order));
-    }
-    // Always add ID as secondary sort for consistency
-    if (sortBy !== "id") {
-      queryConstraints.push(orderBy("id", order));
-    }
+    // Remove sorting from the Firestore query
 
     // Get all documents for searching and client-side pagination
-    let allProducts = [];
     const fullQuery = query(productsRef, ...queryConstraints);
     const fullQuerySnapshot = await getDocs(fullQuery);
 
+    let allProducts = [];
     fullQuerySnapshot.forEach((doc) => {
       allProducts.push({
         id: doc.id,
@@ -59,6 +46,22 @@ export async function GET(request) {
       allProducts = searchResults.map((result) => result.item);
     }
 
+    // Custom sorting function
+    allProducts.sort((a, b) => {
+      if (sortBy === "price") {
+        return order === "asc" ? a.price - b.price : b.price - a.price;
+      }
+      // For ID sorting, convert to numbers if possible
+      const aId = parseInt(a.id) || a.id;
+      const bId = parseInt(b.id) || b.id;
+      if (typeof aId === "number" && typeof bId === "number") {
+        return order === "asc" ? aId - bId : bId - aId;
+      }
+      // Fallback to string comparison
+      return order === "asc"
+        ? a.id.localeCompare(b.id)
+        : b.id.localeCompare(a.id);
+    });
     // Apply pagination to the filtered/searched results
     const startIndex = (page - 1) * pageLimit;
     const paginatedProducts = allProducts.slice(
