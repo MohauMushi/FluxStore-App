@@ -1,5 +1,5 @@
 import { db } from "../../../lib/firebaseConfig";
-import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import Fuse from "fuse.js";
 
 export async function GET(request) {
