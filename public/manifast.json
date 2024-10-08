@@ -1,6 +1,7 @@
 {
 	"name": "Fluxstore App",
 	"short_name": "FluxMarket",
+	"description": "Discover a wide range of products at FluxStore. From electronics to fashion, find everything you need at great prices.",
 	"icons": [
 	  {
 		"src": "/public/android-chrome-192x192.png",
