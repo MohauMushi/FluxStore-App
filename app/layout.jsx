@@ -79,12 +79,10 @@ export default function RootLayout({ children }) {
       <body>
         {/* Navigation bar component */}
         <Navbar />
+        <PWAInstallPrompt />
         <div className="flex-grow">
           {/* Main content area */}
-          <AuthProvider>
-            <PWAInstallPrompt />
-            {children}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </div>
         {/* Footer component*/}
         <Footer />
