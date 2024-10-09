@@ -2,6 +2,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { AuthProvider } from "./context/AuthContext";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 
 /**
  * Metadata for the application.
@@ -11,6 +12,13 @@ export const metadata = {
   title: "FluxStore",
   description:
     "FluxStore is a modern, feature-rich e-commerce application built with Next.js",
+  manifest: "/manifest.json",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Fluxstore",
+  },
   keywords: "e-commerce, online store, shopping",
   author: "FluxStore Team @MOHAU-MUSHI",
   openGraph: {
@@ -73,7 +81,10 @@ export default function RootLayout({ children }) {
         <Navbar />
         <div className="flex-grow">
           {/* Main content area */}
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <PWAInstallPrompt />
+            {children}
+          </AuthProvider>
         </div>
         {/* Footer component*/}
         <Footer />
