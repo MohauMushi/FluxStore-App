@@ -8,6 +8,10 @@ import LoadingSpinner from "./LoadingSpinner";
 import Pagination from "./pagination";
 import PriceSort from "./PriceSort";
 import CategoryFilter from "./CategoryFilter";
+import { useOfflineMode } from "@/app/hooks/useOfflineMode";
+import { firebaseDataManager } from "@/app/utils/firebaseDataManager";
+import OfflineFallback from "./OfflineFallback";
+
 /**
  * ProductGrid Component
  *
@@ -26,7 +30,7 @@ function ProductGridContent() {
   const [loading, setLoading] = useState(true);
   const [isReset, setIsReset] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [totalPages, setTotalPages] = useState(1);
+  const { isOnline, newVersionAvailable } = useOfflineMode();
 
   // Get all parameters from URL
   const currentPage = Number(searchParams.get("page")) || 1;
@@ -52,14 +56,31 @@ function ProductGridContent() {
   async function fetchProducts() {
     try {
       setLoading(true);
-      const data = await getProducts({
-        page: currentPage,
-        limit,
-        category,
-        search,
-        sortBy,
-        order,
-      });
+      let data;
+
+      if (isOnline) {
+        // Fetch from API when online
+        data = await getProducts({
+          page: currentPage,
+          limit,
+          category,
+          search,
+          sortBy,
+          order,
+        });
+        // Cache the fetched data
+        firebaseDataManager.saveToLocalStorage(
+          `products-${currentPage}-${category}-${search}-${sortBy}-${order}`,
+          data
+        );
+      } else {
+        // Get from local storage when offline
+        data =
+          firebaseDataManager.getFromLocalStorage(
+            `products-${currentPage}-${category}-${search}-${sortBy}-${order}`
+          ) || [];
+      }
+
       setProducts(data);
       setHasMore(data.length === limit);
       setError(null);
@@ -108,6 +129,22 @@ function ProductGridContent() {
 
   return (
     <div className="space-y-6">
+      {!isOnline && (
+        <OfflineFallback message="You're offline. Showing cached products." />
+      )}
+
+      {newVersionAvailable && (
+        <div className="bg-blue-100 p-4 mb-4 rounded-md">
+          <p className="text-teal-800">A new version is available!</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-2 bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition-colors"
+          >
+            Refresh to Update
+          </button>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="w-full sm:w-auto">
           <CategoryFilter isReset={isReset} />
