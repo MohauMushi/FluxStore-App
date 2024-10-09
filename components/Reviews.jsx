@@ -78,26 +78,40 @@ export default function ReviewList({ productId, reviews, onReviewChange }) {
    * @param {string} reviewId - The ID of the review to be deleted
    */
   const handleDeleteReview = async (reviewId) => {
-    const updatedReviews = reviews.filter((review) => review.id !== reviewId);
-    setReviews(updatedReviews); // Optimistically update
+    if (!user) {
+      alert("You must be logged in to delete a review.");
+      return;
+    }
+
+    if (!confirm("Are you sure you want to delete this review?")) {
+      return;
+    }
 
     try {
+      const token = await user.getIdToken(true);
       const response = await fetch(`/api/products/${productId}/reviews`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${await user.getIdToken()}`,
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ reviewId }),
       });
 
       if (!response.ok) {
-        throw new Error("Error deleting review");
+        throw new Error("Failed to delete review");
       }
+
+      onReviewChange(); // Trigger a refresh of the reviews
     } catch (error) {
-      alert("Failed to delete review. Reverting changes.");
-      setReviews(prevReviews); // Revert in case of error
+      console.error("Error deleting review:", error);
+      alert("Failed to delete review. Please try again.");
     }
+  };
+
+  const handleReviewSubmit = async (updatedReview) => {
+    onReviewChange(); // Trigger a refresh of the reviews
+    setEditingReview(null); // Clear the editing state
   };
 
   return (
@@ -221,6 +235,24 @@ export default function ReviewList({ productId, reviews, onReviewChange }) {
               </div>
             ))}
           </div>
+          {editingReview && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+              <div className="bg-white rounded-lg max-w-md w-full p-6">
+                <h3 className="text-lg font-semibold mb-4">Edit Review</h3>
+                <ReviewForm
+                  productId={productId}
+                  onReviewSubmit={handleReviewSubmit}
+                  initialReview={editingReview}
+                />
+                <button
+                  onClick={() => setEditingReview(null)}
+                  className="mt-4 text-gray-600 hover:text-gray-800"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
