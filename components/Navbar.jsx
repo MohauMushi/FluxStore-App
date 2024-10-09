@@ -134,7 +134,7 @@ const Navbar = () => {
             <div
               className={`flex-grow max-w-md ${isSearchVisible ? "w-full" : "w-auto"}`}
             >
-              <Suspense fallback={<div>Loading search...</div>}>
+              <Suspense>
                 <SearchBar
                   isVisible={isSearchVisible}
                   onToggle={toggleSearch}
