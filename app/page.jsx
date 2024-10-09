@@ -24,22 +24,22 @@ function HomeContent() {
 
   return (
     <main className="min-h-screen p-4 bg-gray-100">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {user ? (
           <div className="mb-4 p-4 bg-white rounded shadow">
-            <div className="flex justify-between items-center">
-              <p className="text-lg">Welcome, {user.email}</p>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+              <p className="text-lg text-gray-800">Welcome, {user.email}</p>
               <button
                 onClick={logOut}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                className="w-full sm:w-auto px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
               >
                 Sign Out
               </button>
             </div>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-4 mb-8">
-            
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {/* Content for non-authenticated users */}
           </div>
         )}
 
