@@ -2,6 +2,18 @@ import { NextResponse } from "next/server";
 import { db } from "../../../lib/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
+/**
+ * GET handler for fetching categories from Firestore.
+ *
+ * This function attempts to retrieve a document named "allCategories" from the "categories" collection in Firestore.
+ * It returns the categories array in JSON format if the document exists and contains the categories data.
+ * If the document or the categories array does not exist, it returns a 404 error response.
+ * In case of an error during the fetch process, it returns a 500 error response.
+ *
+ * @async
+ * @function GET
+ * @returns {Promise<NextResponse>} The Next.js response with either the categories data or an error message.
+ */
 export async function GET() {
   try {
     // Reference to the specific document
@@ -10,6 +22,7 @@ export async function GET() {
     // Get the document
     const docSnap = await getDoc(categoriesDocRef);
 
+    // Check if the document exists
     if (docSnap.exists()) {
       const data = docSnap.data();
       console.log("Categories data:", data);

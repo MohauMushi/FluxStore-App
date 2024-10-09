@@ -6,6 +6,13 @@ import { useRouter } from "next/navigation";
 import { updatePassword } from "firebase/auth";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
+/**
+ * AccountPage component handles user account settings, allowing users to view their account info and update their password.
+ * It redirects users to the login page if they are not authenticated.
+ *
+ * @component
+ * @returns {JSX.Element|null} The AccountPage component.
+ */
 export default function AccountPage() {
   const { user, loading, logOut } = useAuth();
   const router = useRouter();
@@ -15,38 +22,52 @@ export default function AccountPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  /**
+   * useEffect hook that redirects the user to the login page if they are not authenticated.
+   */
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login");
     }
   }, [user, loading, router]);
 
+  /**
+   * Handles password update form submission. Checks if the passwords match and attempts to update the user's password using Firebase.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
+   */
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
+    // Check if the new password matches the confirmation password
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
     try {
-      await updatePassword(user, password);
+      await updatePassword(user, password); // Update the password in Firebase
       setSuccess("Password updated successfully.");
     } catch (error) {
       setError("Error updating password: " + error.message);
     }
   };
 
+  /**
+   * Toggles the visibility of the password input fields.
+   */
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
+  // Display a loading spinner while the authentication state is being determined
   if (loading) {
     return <LoadingSpinner />;
   }
 
+  // Return null if no user is logged in (redirect handled by useEffect)
   if (!user) {
     return null;
   }

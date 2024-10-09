@@ -2,6 +2,25 @@ import { db } from "../../../lib/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import Fuse from "fuse.js";
 
+/**
+ * GET handler for fetching products from Firestore with filtering, searching, sorting, and pagination.
+ *
+ * This function retrieves products from the Firestore database based on optional query parameters:
+ * - `page`: The page number for pagination (default is 1).
+ * - `limit`: The number of products per page (default is 20).
+ * - `sortBy`: The field to sort the results by (default is "id").
+ * - `order`: The sort order ("asc" for ascending, "desc" for descending, default is "asc").
+ * - `category`: An optional filter to get products of a specific category.
+ * - `search`: An optional search query to filter products based on the title.
+ *
+ * The function fetches all products, applies the necessary filters and sorting,
+ * and returns a paginated response.
+ *
+ * @async
+ * @function GET
+ * @param {Request} request - The incoming request object containing query parameters.
+ * @returns {Promise<Response>} A response object containing the filtered, sorted, and paginated products.
+ */
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);

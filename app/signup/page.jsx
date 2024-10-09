@@ -5,39 +5,54 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+/**
+ * SignUpForm component handles user registration.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Sign Up form.
+ */
 export default function SignUpForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { signUp } = useAuth();
-  const router = useRouter();
+  const [email, setEmail] = useState(""); // User email state
+  const [password, setPassword] = useState(""); // User password state
+  const [confirmPassword, setConfirmPassword] = useState(""); // Password confirmation state
+  const [showPassword, setShowPassword] = useState(false); // Toggle for showing password
+  const [error, setError] = useState(""); // Error message state
+  const [isLoading, setIsLoading] = useState(false); // Loading state for the form submission
+  const { signUp } = useAuth(); // Hook to access the authentication context
+  const router = useRouter(); // Router instance for navigation
 
+  /**
+   * Handles the form submission for user registration.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - The event object.
+   * @returns {Promise<void>}
+   */
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords do not match"); // Set error if passwords do not match
       return;
     }
-    setIsLoading(true);
-    setError("");
+    setIsLoading(true); // Set loading state to true
+    setError(""); // Reset error message
     try {
-      await signUp(email, password);
-      //   router.push("/login");
+      await signUp(email, password); // Call the signUp function from auth context
+      //   router.push("/login"); // Uncomment to navigate to login after successful sign up
     } catch (error) {
-      setError(error.message);
+      setError(error.message); // Set error message on failure
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state
     }
   };
 
+  /**
+   * Toggles the visibility of the password input field.
+   */
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear(); // Get the current year for the footer
 
   return (
     <div className="flex flex-col items-center justify-between bg-gradient-to-br from-teal-200 via-yellow-100 to-teal-200 dark:from-teal-900 dark:via-gray-800 dark:to-teal-900 min-h-[90vh]">
@@ -164,7 +179,7 @@ export default function SignUpForm() {
         <a href="#" className="hover:underline">
           Contact Us
         </a>{" "}
-        • <span>&#64;  {currentYear} FluxStore All Rights Reserved</span>
+        • <span>&#64; {currentYear} FluxStore All Rights Reserved</span>
       </footer>
     </div>
   );
