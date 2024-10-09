@@ -4,6 +4,7 @@ import ProductDetails from "../../../components/ProductDetails";
 import ReviewList from "../../../components/Reviews";
 import Loading from "../[id]/loading";
 import BackButton from "../../../components/BackButton";
+import DynamicReviewList from "@/components/DynamicReviewList";
 
 /**
  * Generating metadata for the product page.
@@ -65,7 +66,10 @@ export default async function ProductPage({ params }) {
           <ProductDetails {...product} />
         </Suspense>
         <Suspense fallback={<Loading />}>
-          <ReviewList reviews={product.reviews || []} />
+          <DynamicReviewList
+            initialReviews={product.reviews || []}
+            productId={params.id}
+          />
         </Suspense>
       </div>
     );
