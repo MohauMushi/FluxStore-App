@@ -1,20 +1,38 @@
 "use client";
-
 import { useState } from "react";
 import StarRating from "./StarRating";
+import { useAuth } from "@/app/context/AuthContext";
+import ReviewForm from "./ReviewForm";
+import { Star } from "lucide-react";
 
 /**
- * ReviewList Component
- * Renders a list of reviews along with average rating and rating distribution.
- *
- * @param {Object} props - The component props
- * @param {Array} props.reviews - An array of review objects
- * @returns {JSX.Element} The rendered ReviewList component
+ * @typedef {Object} Review
+ * @property {string} id - The unique identifier of the review
+ * @property {number} rating - The rating given in the review (1-5)
+ * @property {string} comment - The text content of the review
+ * @property {string} reviewerName - The name of the reviewer
+ * @property {string} reviewerEmail - The email of the reviewer
+ * @property {string} date - The date the review was submitted
  */
-export default function ReviewList({ reviews }) {
+
+/**
+ * ReviewList component for displaying and managing product reviews
+ * @param {Object} props - The component props
+ * @param {string} props.productId - The ID of the product
+ * @param {Review[]} props.reviews - An array of review objects
+ * @param {function} props.onReviewChange - Callback function called when reviews are updated
+ * @returns {JSX.Element} The ReviewList component
+ */
+export default function ReviewList({ productId, reviews, onReviewChange }) {
   const [sortBy, setSortBy] = useState("date");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [editingReview, setEditingReview] = useState(null);
+  const { user } = useAuth();
 
+  /**
+   * Sorts the reviews based on the current sort criteria
+   * @type {Review[]}
+   */
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortBy === "date") {
       return sortOrder === "desc"
@@ -37,10 +55,49 @@ export default function ReviewList({ reviews }) {
     return acc;
   }, {});
 
+  /**
+   * Handles the change in sort criteria
+   * @param {Event} e - The select element change event
+   */
   const handleSortChange = (e) => {
     const [newSortBy, newSortOrder] = e.target.value.split("-");
     setSortBy(newSortBy);
     setSortOrder(newSortOrder);
+  };
+
+  /**
+   * Sets the review to be edited
+   * @param {Review} review - The review to be edited
+   */
+  const handleEditReview = (review) => {
+    setEditingReview(review);
+  };
+
+  /**
+   * Handles the deletion of a review
+   * @param {string} reviewId - The ID of the review to be deleted
+   */
+  const handleDeleteReview = async (reviewId) => {
+    const updatedReviews = reviews.filter((review) => review.id !== reviewId);
+    setReviews(updatedReviews); // Optimistically update
+
+    try {
+      const response = await fetch(`/api/products/${productId}/reviews`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${await user.getIdToken()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ reviewId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error deleting review");
+      }
+    } catch (error) {
+      alert("Failed to delete review. Reverting changes.");
+      setReviews(prevReviews); // Revert in case of error
+    }
   };
 
   return (
@@ -79,7 +136,10 @@ export default function ReviewList({ reviews }) {
 
             {/* Rating distribution bars */}
             {[5, 4, 3, 2, 1].map((rating) => (
-              <div key={rating} className="flex items-center mb-2">
+              <div
+                key={`star-bar-${rating}`}
+                className="flex items-center mb-2"
+              >
                 <span className="flex justify-center items-center w-8 text-gray-600">
                   {rating}{" "}
                   <svg
@@ -104,16 +164,33 @@ export default function ReviewList({ reviews }) {
                 </span>
               </div>
             ))}
+            <div className="p-3 mb-6">
+              <ReviewForm
+                productId={productId}
+                onReviewSubmit={onReviewChange}
+                initialReview={editingReview}
+              />
+            </div>
           </div>
+
           {/* Individual reviews section */}
-          <div className="lg:w-2/3 lg:pl-6 lg:border-l md:ml-5  border-gray-200">
-            {sortedReviews.map((review, index) => (
+          <div className="lg:w-2/3 lg:pl-6 lg:border-l md:ml-5 border-gray-200">
+            {sortedReviews.map((review) => (
               <div
-                key={index}
+                key={review.date}
                 className="border-b border-gray-200 pb-6 mb-6 last:border-b-0"
               >
                 <div className="flex items-center space-x-2">
-                  <StarRating rating={review.rating} />
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <Star
+                      key={`star-${review.id}-${value}`}
+                      className={`w-5 h-5 ${
+                        value <= review.rating
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                    />
+                  ))}
                 </div>
                 <div className="flex flex-wrap mb-3">
                   <p className="font-semibold text-gray-800">
@@ -125,6 +202,22 @@ export default function ReviewList({ reviews }) {
                   </p>
                 </div>
                 <p className="mb-3 text-gray-700">{review.comment}</p>
+                {user && user.email === review.reviewerEmail && (
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => handleEditReview(review)}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteReview(review.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
