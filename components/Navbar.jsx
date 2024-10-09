@@ -255,7 +255,7 @@ const Navbar = () => {
                   <div className="space-y-1">
                     <Link
                       href="/account"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="text-white hover:bg-teal-600 block px-3 py-1 rounded-md text-base font-medium"
                     >
                       Account
                     </Link>
