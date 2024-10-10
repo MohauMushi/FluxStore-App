@@ -63,33 +63,39 @@ export async function POST(request, { params }) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    const newReview = {
+    const currentDate = new Date();
+    const reviewData = {
       id: `${userId}-${Date.now()}`,
-      rating,
-      comment,
-      reviewerEmail: userId,
-      reviewerName,
-      date: new Date().toISOString(), // Using ISO 8601 format
+      rating: Number(rating),
+      comment: String(comment),
+      reviewerEmail: String(userId),
+      reviewerName: String(reviewerName || "Anonymous"),
+      date: currentDate.toISOString(), // Store as ISO string
     };
 
     await updateDoc(productRef, {
-      reviews: arrayUnion(newReview),
+      reviews: arrayUnion(reviewData),
     });
 
-    // Update the product's average rating
-    const currentReviews = productSnap.data().reviews || [];
-    const newReviews = [...currentReviews, newReview];
+    // Update average rating
+    const updatedProductSnap = await getDoc(productRef);
+    const updatedProductData = updatedProductSnap.data();
+    const allReviews = updatedProductData.reviews || [];
+
     const averageRating =
-      newReviews.reduce((sum, review) => sum + review.rating, 0) /
-      newReviews.length;
+      allReviews.reduce((sum, review) => sum + review.rating, 0) /
+      allReviews.length;
 
     await updateDoc(productRef, {
       averageRating: Number(averageRating.toFixed(1)),
-      totalReviews: newReviews.length,
+      totalReviews: allReviews.length,
     });
 
     return NextResponse.json(
-      { message: "Review added successfully", review: newReview },
+      {
+        message: "Review added successfully",
+        review: reviewData, // Send back the same review data
+      },
       { status: 201 }
     );
   } catch (error) {

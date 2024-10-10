@@ -53,9 +53,12 @@ export default function ReviewForm({
       const token = await user.getIdToken(true);
       const url = `/api/products/${productId}/reviews`;
       const method = initialReview ? "PUT" : "POST";
+
+      const numericRating = Number(rating);
+
       const body = JSON.stringify({
-        rating,
-        comment,
+        rating: numericRating,
+        comment: comment.trim(),
         reviewerName: user.displayName || "Anonymous",
         ...(initialReview && { reviewId: initialReview.id }),
       });
@@ -85,13 +88,7 @@ export default function ReviewForm({
       }
     } catch (error) {
       console.error("Error submitting review:", error);
-      if (error.message.includes("network-request-failed")) {
-        setError(
-          "Network error. Please check your internet connection and try again."
-        );
-      } else {
-        setError(error.message || "Failed to submit review. Please try again.");
-      }
+      setError(error.message || "Failed to submit review. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
