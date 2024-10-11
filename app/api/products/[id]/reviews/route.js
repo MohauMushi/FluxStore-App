@@ -114,6 +114,12 @@ export async function POST(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     const userId = await verifyAuth(request);
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
 
     const { id } = params;
     const { reviewId, rating, comment } = await request.json();
@@ -135,6 +141,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: "Review not found" }, { status: 404 });
     }
 
+    // Compare using email instead of userId
     if (reviewToUpdate.reviewerEmail !== userId) {
       return NextResponse.json(
         { error: "Unauthorized to edit this review" },
@@ -146,24 +153,25 @@ export async function PUT(request, { params }) {
       ...reviewToUpdate,
       rating,
       comment,
-      date: new Date().toISOString(), // Using ISO 8601 format
+      date: new Date().toISOString(),
     };
 
+    // Remove old review and add updated one
     await updateDoc(productRef, {
       reviews: arrayRemove(reviewToUpdate),
     });
-
     await updateDoc(productRef, {
       reviews: arrayUnion(updatedReview),
     });
 
-    // Update the product's average rating
-    const updatedReviews = productData.reviews.map((review) =>
-      review.id === reviewId ? updatedReview : review
-    );
+    // Update average rating
+    const updatedProductSnap = await getDoc(productRef);
+    const updatedProductData = updatedProductSnap.data();
+    const allReviews = updatedProductData.reviews || [];
+
     const averageRating =
-      updatedReviews.reduce((sum, review) => sum + review.rating, 0) /
-      updatedReviews.length;
+      allReviews.reduce((sum, review) => sum + review.rating, 0) /
+      allReviews.length;
 
     await updateDoc(productRef, {
       averageRating: Number(averageRating.toFixed(1)),
@@ -176,7 +184,7 @@ export async function PUT(request, { params }) {
   } catch (error) {
     console.error("Error updating review:", error);
     return NextResponse.json(
-      { error: "Failed to update review" },
+      { error: error.message || "Failed to update review" },
       { status: 500 }
     );
   }
@@ -192,6 +200,12 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     const userId = await verifyAuth(request);
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
 
     const { id } = params;
     const { reviewId } = await request.json();
@@ -213,6 +227,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: "Review not found" }, { status: 404 });
     }
 
+    // Compare using email instead of userId
     if (reviewToDelete.reviewerEmail !== userId) {
       return NextResponse.json(
         { error: "Unauthorized to delete this review" },
@@ -224,7 +239,7 @@ export async function DELETE(request, { params }) {
       reviews: arrayRemove(reviewToDelete),
     });
 
-    // Update the product's average rating
+    // Update average rating
     const updatedReviews = productData.reviews.filter(
       (review) => review.id !== reviewId
     );
@@ -246,7 +261,7 @@ export async function DELETE(request, { params }) {
   } catch (error) {
     console.error("Error deleting review:", error);
     return NextResponse.json(
-      { error: "Failed to delete review" },
+      { error: error.message || "Failed to delete review" },
       { status: 500 }
     );
   }
